@@ -33,7 +33,7 @@ void filestripper()
     tchain->Add("foils_nd150_61_rot_nd150_110_01.root");
     tchain->Add("foils_nd150_61_rot_nd150_110_02.root");
 
-    TFile *finput = new TFile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root")
+    TFile *finput = new TFile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root");
     TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output_truth.root");
 
     /*
