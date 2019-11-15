@@ -5,7 +5,7 @@ SET(CMAKE_CXX_STANDARD 11)
 #SET(CMAKE_CXX_FLAGS "-O0")
 #SET(CMAKE_C_FLAGS "-O0")
 
-PROJECT(main)
+PROJECT(filestripper)
 
 #ADD_EXECUTABLE(main
 #    src/aux.cpp
