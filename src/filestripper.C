@@ -3,8 +3,8 @@
 //#include <iostream>
 
 // Root headers
-//#include "TFile.h"
-//#include "TTree.h"
+#include "TFile.h"
+#include "TTree.h"
 
 
 void filestripper()
