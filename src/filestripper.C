@@ -5,32 +5,33 @@
 // Root headers
 #include "TFile.h"
 #include "TTree.h"
+#include "TChain.h"
 
 
 void filestripper()
 {
 
     TChain *tchain = new TChain("h10", "h10");
-    tchain->Add("foils_nd150_61_rot_nd150_101_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_101_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_102_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_102_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_103_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_103_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_104_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_104_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_105_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_105_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_106_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_106_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_107_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_107_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_108_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_108_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_109_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_109_02.root")
-    tchain->Add("foils_nd150_61_rot_nd150_110_01.root")
-    tchain->Add("foils_nd150_61_rot_nd150_110_02.root")
+    tchain->Add("foils_nd150_61_rot_nd150_101_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_101_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_102_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_102_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_103_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_103_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_104_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_104_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_105_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_105_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_106_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_106_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_107_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_107_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_108_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_108_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_109_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_109_02.root");
+    tchain->Add("foils_nd150_61_rot_nd150_110_01.root");
+    tchain->Add("foils_nd150_61_rot_nd150_110_02.root");
 
     TFile *finput = new Tfile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root")
     TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output_truth.root");
