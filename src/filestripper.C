@@ -7,7 +7,7 @@
 //#include "TTree.h"
 
 
-int main()
+void filestripper()
 {
 
     Int_t nElectrons;
