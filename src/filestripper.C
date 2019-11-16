@@ -363,7 +363,7 @@ void filestripper()
             std::cin.get();
 
             // match variables
-            if(run == Run)
+            if(-run == Run)
             {
                 if(evntime == Event)
                 {
