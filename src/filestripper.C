@@ -337,6 +337,11 @@ void filestripper()
         // search for corresponding entry in tchain ttree
         for(;;)
         {
+            if(ix_chain >= max_chain)
+            {
+                std::cout << "No matching entry for ix=" << ix << " found" << std::endl;
+                break;
+            }
             tchain->GetEntry(ix_chain);
 
             // match variables
