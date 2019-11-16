@@ -327,6 +327,8 @@ void filestripper()
     Long64_t max{tinput->GetEntries()};
     Long64_t max_chain{tchain->GetEntries()};
     Long64_t ix_chain{0};
+    Long64_t no_match_start = -1;
+    //Long64_t no_match_stop = -1;
     for(Long64_t ix{0}; ix < max; ++ ix)
     {
 
@@ -339,7 +341,19 @@ void filestripper()
         {
             if(ix_chain >= max_chain)
             {
-                std::cout << "No matching entry for ix=" << ix << " found" << std::endl;
+                //std::cout << "No matching entry for ix=" << ix << " found" << std::endl;
+                if(no_match_start == -1)
+                {
+                    no_match_start = ix;
+                }
+                else
+                {
+                    //if(no_match_stop == -1)
+                    //{
+                    //    
+                    //}
+                    //if(ix > no_match_start + 1)
+                }
                 break;
             }
             tchain->GetEntry(ix_chain);
@@ -349,7 +363,14 @@ void filestripper()
             {
                 if(evntime == Event)
                 {
+
+                    if(no_match_start != -1)
+                    {
+                        std::cout << "No matching entry for ix range: " << no_match_start << " < ix < " << ix - 1 << std::endl;
+                        no_match_start = -1;
+                    }
                     std::cout << "Found corresponding event: ix=" << ix << " ix_chain=" << ix_chain << std::endl;
+
                     ++ ix_chain;
                     break;
                 }
@@ -357,16 +378,23 @@ void filestripper()
 
             ++ ix_chain;
 
+            /*
             if(ix_chain % 1000000 == 0)
             {
                 std::cout << "ix_chain=" << ix_chain << std::endl;
             }
+            */
         }
 
 
         ++ count;
         toutput->Fill();
     }
+    if(no_match_start != -1)
+    {
+        std::cout << "No matching entry for ix range: " << no_match_start << " < ix < " << max - 1 << std::endl;
+    }
+    std::cout << "done" << std::endl;
 
     toutput->Write();
     foutput->Close();
