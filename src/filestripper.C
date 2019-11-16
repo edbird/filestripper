@@ -134,7 +134,7 @@ void filestripper()
     tinput->SetBranchAddress("NAPromptGgHitsSide", &NAPromptGgHitsSide);
     tinput->SetBranchAddress("NAPromptGgHitsDist2Vertex", NAPromptGgHitsDist2Vertex);
     tinput->SetBranchAddress("NAPromptGgHitsDist2Calo", NAPromptGgHitsDist2Calo);
-    tinput->SetBranchAddress("nGammaClusters", nGammaClusters);
+    tinput->SetBranchAddress("nGammaClusters", &nGammaClusters);
     tinput->SetBranchAddress("nInCluster", nInCluster);
     tinput->SetBranchAddress("clusterEnergy", clusterEnergy);
     tinput->SetBranchAddress("clusterTimeSpan", clusterTimeSpan);
