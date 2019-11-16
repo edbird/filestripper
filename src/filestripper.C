@@ -34,11 +34,11 @@ void filestripper()
     tchain->Add("foils_nd150_61_rot_nd150_110_02.root");
 
     TFile *finput = new TFile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root");
-    TTree *tinput = finput->Get("Nd150_2eNg/Nd150_2eNg");
+    TTree *tinput = (TTree*)finput->Get("Nd150_2eNg/Nd150_2eNg");
 
     TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output_truth.root", "recreate");
-    TDirectory doutput = foutput->mkdir("Nd150_2eNg");
-    foutput->cd("Nd150_2eNg")
+    TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
+    foutput->cd("Nd150_2eNg");
     TTree *toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
 
     Int_t Event = 0; 
@@ -141,7 +141,7 @@ void filestripper()
     tinput->SetBranchAddress("nTotalClusterHits", nTotalClusterHits);
     tinput->SetBranchAddress("clusterHitEnergy", clusterHitEnergy);
     tinput->SetBranchAddress("clusterHitPMT", clusterHitPMT);
-    tinput->SetBranchAddress("clusterHitLDFlag", clusterHitLDFlags);
+    tinput->SetBranchAddress("clusterHitLDFlag", clusterHitLDFlag);
     tinput->SetBranchAddress("clusterHitLDCorr", clusterHitLDCorr);
     tinput->SetBranchAddress("clusterHitLDCorrErr", clusterHitLDCorrErr);
     tinput->SetBranchAddress("clusterHitSec", clusterHitSec);
@@ -360,7 +360,7 @@ void filestripper()
     foutput->Close();
 
     finput->Close();
-    tchain->Close();
+    //tchain->Close();
 
     /*
     std::cout << count << "/" << max << std::endl;;
