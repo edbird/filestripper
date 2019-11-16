@@ -351,6 +351,11 @@ void filestripper()
             }
 
             ++ ix_chain;
+
+            if(ix_chain / 10000 == 0)
+            {
+                std::cout << "ix_chain=" << ix_chain << std::endl;
+            }
         }
 
 
