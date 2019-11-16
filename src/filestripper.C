@@ -330,6 +330,8 @@ void filestripper()
     for(Long64_t ix{0}; ix < max; ++ ix)
     {
 
+        std::cout << "Searching, ix=" << ix << std::endl;
+
         tinput->GetEntry(ix);
         
         // search for corresponding entry in tchain ttree
