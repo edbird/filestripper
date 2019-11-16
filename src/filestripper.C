@@ -138,7 +138,7 @@ void filestripper()
     tinput->SetBranchAddress("nInCluster", nInCluster);
     tinput->SetBranchAddress("clusterEnergy", clusterEnergy);
     tinput->SetBranchAddress("clusterTimeSpan", clusterTimeSpan);
-    tinput->SetBranchAddress("nTotalClusterHits", nTotalClusterHits);
+    tinput->SetBranchAddress("nTotalClusterHits", &nTotalClusterHits);
     tinput->SetBranchAddress("clusterHitEnergy", clusterHitEnergy);
     tinput->SetBranchAddress("clusterHitPMT", clusterHitPMT);
     tinput->SetBranchAddress("clusterHitLDFlag", clusterHitLDFlag);
