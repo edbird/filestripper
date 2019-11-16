@@ -358,6 +358,10 @@ void filestripper()
             }
             tchain->GetEntry(ix_chain);
 
+            std::cout << "run=" << run << " Run=" << Run << std::endl;
+            std::cout << "evntime=" << evntime << " Event=" << Event << std::endl;
+            std::cin.get();
+
             // match variables
             if(run == Run)
             {
