@@ -34,7 +34,7 @@ void filestripper()
     tchain->Add("foils_nd150_61_rot_nd150_110_02.root");
 
     std::cout << "All files added in TChain" << std::endl;
-    std::cin.get();
+    //std::cin.get();
 
     TFile *finput = new TFile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root");
     TTree *tinput = (TTree*)finput->Get("Nd150_2eNg/Nd150_2eNg");
@@ -368,7 +368,13 @@ void filestripper()
             tchain->GetEntry(ix_chain);
 
             std::cout << "-run=" << -run << " Run=" << Run << std::endl;
-            std::cout << "evntime=" << evntime << " Event=" << Event << std::endl;
+            //std::cout << "evntime=" << evntime << " Event=" << Event << std::endl;
+            std::cout << "trueVertex(" << Xvntu << "," << Yvntu << "," << Zvntu ")" << " [cartesian] " << std::endl;
+            Double_t thetantu = std::atan2(Yvntu, Xvntu);
+            Double_t sectorntu = thetantu / 18.0;
+            Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
+            std::cout << "trueVertex(" << rntu << "," << sectorntu << "," << Zvntu ")" << " [cylindrical] " << std::endl;
+            std::cout << "trueVertex(" << trueVertexSector << "," << trueVertexR << "," << trueVertexZ ")" << " [cylindrical] " << std::endl;
             std::cin.get();
 
             // match variables
@@ -381,9 +387,6 @@ void filestripper()
                 //if(Xvntu != ) vertex_match = false;
                 //if(Yvntu != ) vertex_match = false;
                 //if(Zvntu != ) vertex_match = false;
-                Double_t thetantu = std::atan2(Yvntu, Xvntu);
-                Double_t sectorntu = thetantu / 18.0;
-                Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
                 if(std::abs(trueVertexSector - sectorntu) > 1.0e-6) vertex_match = false;
                 if(std::abs(trueVertexR - rntu) > 1.0e-6) vertex_match = false;
                 if(std::abs(trueVertexZ - Zvntu) > 1.0e-6) vertex_match = false;
