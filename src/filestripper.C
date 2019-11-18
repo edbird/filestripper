@@ -268,10 +268,12 @@ void filestripper()
     Int_t evntime = 0;
     /*
     Float_t tau_sc_sav;: tau_sc_save/F                                        *
-    Int_t Nvntu;: Nvntu/I                                                *
-    Float_t Xvntu;: Xvntu[Nvntu]/F                                         *
-    Float_t Yvntu;: Yvntu[Nvntu]/F                                         *
-    Float_t Zvntu;: Zvntu[Nvntu]/F                                         *
+    */
+    Int_t Nvntu = 0;
+    Float_t Xvntu = 0.0;
+    Float_t Yvntu = 0.0;
+    Float_t Zvntu = 0.0;
+    /*
     Float_t Tofvnt;: Tofvntu[Nvntu]/F                                       *
     */
     Int_t Ntntu = 0;
@@ -287,6 +289,10 @@ void filestripper()
     //tchain->SetBranchAddress("date", &date);
     //tchain->SetBranchAddress("time", &time);
     tchain->SetBranchAddress("evntime", &evntime);
+    tchain->SetBranchAddress("Nvntu", &Nvutu);
+    tchain->SetBranchAddress("Xvntu", &Xvntu);
+    tchain->SetBranchAddress("Yvntu", &Yvntu);
+    tchain->SetBranchAddress("Zvntu", &Zvntu);
     tchain->SetBranchAddress("Ntntu", &Ntntu);
     tchain->SetBranchAddress("Pxntu", &Pxntu);
     tchain->SetBranchAddress("Pyntu", &Pyntu);
@@ -358,14 +364,27 @@ void filestripper()
             }
             tchain->GetEntry(ix_chain);
 
-            std::cout << "run=" << run << " Run=" << Run << std::endl;
+            std::cout << "-run=" << -run << " Run=" << Run << std::endl;
             std::cout << "evntime=" << evntime << " Event=" << Event << std::endl;
             std::cin.get();
 
             // match variables
             if(-run == Run)
             {
+                /*
                 if(evntime == Event)
+                */
+                bool vertex_match = true;
+                if(xntu != ) vertex_match = false;
+                if(yntu != ) vertex_match = false;
+                if(zntu != ) vertex_match = false;
+                thetantu = std::atan2(yntu, xntu);
+                sectorntu = thetantu / 18.0;
+                rntu = std::sqrt(xntu * xntu + yntu * yntu);
+                if(std::abs(trueVertexSector - sectorntu) > 1.0e-6) vertex_match = false;
+                if(std::abs(rntu - trueVertexR) > 1.0e-6) vertex_match = false;
+                if(std::abs(zntu - trueVertexZ) > 1.0e-6) vertex_match = false;
+                if(vertex_match == true)
                 {
 
                     if(no_match_start != -1)
