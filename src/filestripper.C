@@ -373,8 +373,8 @@ void filestripper()
             Double_t thetantu = std::atan2(Yvntu, Xvntu);
             Double_t sectorntu = thetantu / 18.0;
             Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
-            std::cout << "trueVertex(" << rntu << "," << sectorntu << "," << Zvntu ")" << " [cylindrical] " << std::endl;
-            std::cout << "trueVertex(" << trueVertexSector << "," << trueVertexR << "," << trueVertexZ ")" << " [cylindrical] " << std::endl;
+            std::cout << "trueVertex(" << rntu << "," << sectorntu << "," << Zvntu << ")" << " [cylindrical] " << std::endl;
+            std::cout << "trueVertex(" << trueVertexSector << "," << trueVertexR << "," << trueVertexZ << ")" << " [cylindrical] " << std::endl;
             std::cin.get();
 
             // match variables
