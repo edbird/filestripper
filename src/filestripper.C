@@ -33,6 +33,9 @@ void filestripper()
     tchain->Add("foils_nd150_61_rot_nd150_110_01.root");
     tchain->Add("foils_nd150_61_rot_nd150_110_02.root");
 
+    std::cout << "All files added in TChain" << std::endl;
+    std::cin.get();
+
     TFile *finput = new TFile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root");
     TTree *tinput = (TTree*)finput->Get("Nd150_2eNg/Nd150_2eNg");
 
