@@ -379,8 +379,8 @@ void filestripper()
                 //if(Yvntu != ) vertex_match = false;
                 //if(Zvntu != ) vertex_match = false;
                 Double_t thetantu = std::atan2(Yvntu, Xvntu);
-                Doublt_t sectorntu = thetantu / 18.0;
-                Doublt_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
+                Double_t sectorntu = thetantu / 18.0;
+                Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
                 if(std::abs(trueVertexSector - sectorntu) > 1.0e-6) vertex_match = false;
                 if(std::abs(trueVertexR - rntu) > 1.0e-6) vertex_match = false;
                 if(std::abs(trueVertexZ - Zvntu) > 1.0e-6) vertex_match = false;
