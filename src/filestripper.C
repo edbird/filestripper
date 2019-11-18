@@ -369,7 +369,7 @@ void filestripper()
 
             std::cout << "-run=" << -run << " Run=" << Run << std::endl;
             //std::cout << "evntime=" << evntime << " Event=" << Event << std::endl;
-            std::cout << "trueVertex(" << Xvntu << "," << Yvntu << "," << Zvntu ")" << " [cartesian] " << std::endl;
+            std::cout << "trueVertex(" << Xvntu << "," << Yvntu << "," << Zvntu << ")" << " [cartesian] " << std::endl;
             Double_t thetantu = std::atan2(Yvntu, Xvntu);
             Double_t sectorntu = thetantu / 18.0;
             Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
