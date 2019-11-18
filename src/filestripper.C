@@ -289,7 +289,7 @@ void filestripper()
     //tchain->SetBranchAddress("date", &date);
     //tchain->SetBranchAddress("time", &time);
     tchain->SetBranchAddress("evntime", &evntime);
-    tchain->SetBranchAddress("Nvntu", &Nvutu);
+    tchain->SetBranchAddress("Nvntu", &Nvntu);
     tchain->SetBranchAddress("Xvntu", &Xvntu);
     tchain->SetBranchAddress("Yvntu", &Yvntu);
     tchain->SetBranchAddress("Zvntu", &Zvntu);
@@ -375,15 +375,15 @@ void filestripper()
                 if(evntime == Event)
                 */
                 bool vertex_match = true;
-                if(xntu != ) vertex_match = false;
-                if(yntu != ) vertex_match = false;
-                if(zntu != ) vertex_match = false;
-                thetantu = std::atan2(yntu, xntu);
+                if(Xvntu != ) vertex_match = false;
+                if(Yvntu != ) vertex_match = false;
+                if(Zvntu != ) vertex_match = false;
+                thetantu = std::atan2(Yvntu, Xvntu);
                 sectorntu = thetantu / 18.0;
-                rntu = std::sqrt(xntu * xntu + yntu * yntu);
+                rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
                 if(std::abs(trueVertexSector - sectorntu) > 1.0e-6) vertex_match = false;
-                if(std::abs(rntu - trueVertexR) > 1.0e-6) vertex_match = false;
-                if(std::abs(zntu - trueVertexZ) > 1.0e-6) vertex_match = false;
+                if(std::abs(trueVertexR - rntu) > 1.0e-6) vertex_match = false;
+                if(std::abs(trueVertexZ - Zvntu) > 1.0e-6) vertex_match = false;
                 if(vertex_match == true)
                 {
 
