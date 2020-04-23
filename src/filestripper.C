@@ -7,39 +7,217 @@
 #include "TTree.h"
 #include "TChain.h"
 
+int Partition(Double_t A[], Long64_t start, Long64_t end);
+void QuickSort(Double_t A[], Long64_t start, Long64_t end);
+
+int Partition(Double_t A[], Long64_t start, Long64_t end)
+{
+    Long64_t pIndex = start;
+    //Double_t pivot = A[end];
+    Double_t pivot = A[start];
+    
+    /*for(Long64_t i = start; i < end - 1; ++ i)
+    {
+        if(A[i] < pivot)
+        {
+            //Double_t temp = A[i];
+            //A[i] = A[pIndex];
+            //A[pIndex] = temp;
+            std::swap(A[i], A[pIndex]);
+            ++ pIndex;
+        }
+    }
+    */
+    //Double_t temp = A[end];
+    //A[end] = A[pIndex];
+    //A[pIndex] = temp;
+    
+    Long64_t low = start + 1;
+    Long64_t high = end;
+    while(true)
+    {
+        while((low <= high) && (A[high] >= pivot))
+        {
+            high -= 1;
+        }
+
+        while((low <= high) && (A[low] <= pivot))
+        {
+            low += 1;
+        }
+
+        if(low <= high)
+        {
+            std::swap(A[low], A[high]);
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    //std::swap(A[end], A[pIndex]);
+    std::swap(A[start], A[high]);
+    //return pIndex;
+    return high;
+}
+
+void QuickSort(Double_t A[], Long64_t start, Long64_t end)
+{
+    if(start < end)
+    {
+        Long64_t pIndex = Partition(A, start, end);
+        QuickSort(A, start, pIndex - 1);
+        QuickSort(A, pIndex + 1, end);
+    }
+}
+
+void qst()
+{
+    Int_t MAX = 25;
+    Double_t *A = new Double_t[MAX];
+    for(Int_t i{0}; i < MAX; ++ i)
+    {
+        A[i] = 1000.0 - i;
+    }
+    QuickSort(A, 0, MAX);
+    for(Int_t i{0}; i < MAX; ++ i)
+    {
+        std::cout << "i=" << i << " A[i]=" << A[i] << std::endl;
+    }
+    std::cin.get();
+}
+
+void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu)
+{
+
+    const Double_t electron_rest_mass = 1.0e-3 * 0.51099895; // GeV
+    const Double_t m = electron_rest_mass;
+    const Double_t m2 = electron_rest_mass * electron_rest_mass;
+    Double_t p0_2 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0]; // GeV
+    Double_t electron_energy_0 = std::sqrt(p0_2 + m2) - m; // GeV
+    Double_t p1_2 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
+    Double_t electron_energy_1 = std::sqrt(p1_2 + m2) - m;
+    //Double_t electron_energy_0 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0];
+    //electron_energy_0 = 1.0e3 * std::sqrt(electron_energy_0);
+    //Double_t electron_energy_1 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
+    //electron_energy_1 = 1.0e3 * std::sqrt(electron_energy_1);
+    if(electron_energy_0 < electron_energy_1) std::swap(electron_energy_0, electron_energy_1);
+
+#define DEBUG 0
+#if DEBUG
+    std::cout << "original files:  trueEnergy(" << 1.0e+03 * electron_energy_0 << ", " << 1.0e+03 * electron_energy_1 << ") [MeV] " << std::endl;
+    std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << ") [MeV] " << std::endl;
+    std::cout << "processed files: recoEnergy(" << electronEnergy[0] << ", " << electronEnergy[1] << ") [MeV] " << std::endl;
+    //std::cout << "Electron Energy: " << electronEnergy[0] << ", " << 1.0e3 * electron_energy_0 << std::endl;
+    //std::cout << "Electron Energy: " << electronEnergy[1] << ", " << 1.0e3 * electron_energy_1 << std::endl;
+    //std::cout << "Ecc: " << Ecc[0] << ", " << Ecc[1] << std::endl;
+    //std::cout << "Sc: " << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << std::endl;
+#endif
+
+    // TODO: can simply set branch addresses to input variables?
+    // not sure if multiplication is required
+    trueElectronEnergy[0] = 1.0e+03 * electron_energy_0;
+    trueElectronEnergy[1] = 1.0e+03 * electron_energy_1;
+    
+}
+
+void SearchFunction(int &return_flag, Int_t Run, Double_t trueVertexR, Double_t trueVertexSector, Double_t trueVertexZ, Int_t run, Float_t Xvntu, Float_t Yvntu, Float_t Zvntu)
+{
+        
+    Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
+    Double_t thetantu = std::atan2(Yvntu, Xvntu);
+    Double_t sectorntu = (2.5 / std::atan(1.0)) * thetantu; // / 18.0;
+
+    // match variables
+    if(-run == Run)
+    {
+        // if run matches, check if event is a complete match
+        // run will always match
+
+        bool close_match_R = false;
+        bool close_match_sector = false;
+        bool close_match_Z = false;
+        int close_match_count = 0;
+        if(std::abs(trueVertexR - rntu) < 1.0e-4)
+        //if(trueVertexR == rntu)
+        {
+            close_match_R = true;
+            ++ close_match_count;
+        }
+        if(std::abs(trueVertexSector - sectorntu) < 1.0e-6)
+        //if(trueVertexSector == sectorntu)
+        {
+            close_match_sector = true;
+            ++ close_match_count;
+        }
+        //if(std::abs(trueVertexZ - Zvntu) < 1.0e-5)
+        if(trueVertexZ == Zvntu)
+        {
+            close_match_Z = true;
+            ++ close_match_count;
+        }
+
+        // check all
+        if(close_match_count == 3)
+        {
+            return_flag = 1;
+        }
+    }
+}
 
 void filestripper()
 {
 
+    // QuickSort Test
+    //qst();
+
+    // datalist file:
+    // /home/blotsd/NEMO3/Nd150_analysis/DataLists/nd150_61_rot_nd150.lst
+
+    std::string names[20];
+    names[0] = "foils_nd150_61_rot_nd150_101_01.root";
+    names[1] = "foils_nd150_61_rot_nd150_101_02.root";
+    names[2] = "foils_nd150_61_rot_nd150_102_01.root";
+    names[3] = "foils_nd150_61_rot_nd150_102_02.root";
+    names[4] = "foils_nd150_61_rot_nd150_103_01.root";
+    names[5] = "foils_nd150_61_rot_nd150_103_02.root";
+    names[6] = "foils_nd150_61_rot_nd150_104_01.root";
+    names[7] = "foils_nd150_61_rot_nd150_104_02.root";
+    names[8] = "foils_nd150_61_rot_nd150_105_01.root";
+    names[9] = "foils_nd150_61_rot_nd150_105_02.root";
+    names[10] = "foils_nd150_61_rot_nd150_106_01.root";
+    names[11] = "foils_nd150_61_rot_nd150_106_02.root";
+    names[12] = "foils_nd150_61_rot_nd150_107_01.root";
+    names[13] = "foils_nd150_61_rot_nd150_107_02.root";
+    names[14] = "foils_nd150_61_rot_nd150_108_01.root";
+    names[15] = "foils_nd150_61_rot_nd150_108_02.root";
+    names[16] = "foils_nd150_61_rot_nd150_109_01.root";
+    names[17] = "foils_nd150_61_rot_nd150_109_02.root";
+    names[18] = "foils_nd150_61_rot_nd150_110_01.root";
+    names[19] = "foils_nd150_61_rot_nd150_110_02.root";
+
     TChain *tchain = new TChain("h10", "h10");
-    tchain->Add("foils_nd150_61_rot_nd150_101_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_101_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_102_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_102_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_103_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_103_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_104_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_104_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_105_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_105_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_106_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_106_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_107_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_107_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_108_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_108_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_109_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_109_02.root");
-    tchain->Add("foils_nd150_61_rot_nd150_110_01.root");
-    tchain->Add("foils_nd150_61_rot_nd150_110_02.root");
+    for(int i = 0; i < 20; ++ i)
+    {
+        std::cout << "add: i=" << i << " name[i]=" << names[i] << std::endl; 
+        tchain->Add(names[i].c_str());
+    }
 
     std::cout << "All files added in TChain" << std::endl;
     //std::cin.get();
 
-    TFile *finput = new TFile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root");
+    //TFile *finput = new TFile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root");
+    //TFile *finput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output_sorted.root");
+    //TFile *finput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output.root");
+    TFile *finput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output.root");
+                              //unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output.root
+    //TTree *tinput = (TTree*)finput->Get("Nd150_2eNg");
     TTree *tinput = (TTree*)finput->Get("Nd150_2eNg/Nd150_2eNg");
 
-    TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output_truth.root", "recreate");
+    //TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output_truth.root", "recreate");
+    //TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output_truth.root", "recreate");
+    TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth.root", "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
     TTree *toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
@@ -80,21 +258,21 @@ void filestripper()
     Int_t firstGgHitLayer[2];
     Int_t lastGgHitLayer[2];
     Int_t NAPromptGgHits = 0;
-    Int_t NAPromptGgHitsSide = 0;
-    Double_t *NAPromptGgHitsDist2Vertex = NULL; //[NAPromptGgHits];
-    Double_t *NAPromptGgHitsDist2Calo = NULL; //[NAPromptGgHits];
+    Int_t NAPromptGgHitsSide[5];
+    Double_t NAPromptGgHitsDist2Vertex[5]; //[NAPromptGgHits];
+    Double_t NAPromptGgHitsDist2Calo[5]; //[NAPromptGgHits];
     Int_t nGammaClusters = 0;
-    Int_t *nInCluster = NULL; //[nGammaClusters];
-    Double_t *clusterEnergy = NULL; //[nGammaClusters];
-    Double_t *clusterTimeSpan = NULL; //[nGammaClusters];
+    Int_t nInCluster[10]; //[nGammaClusters];
+    Double_t clusterEnergy[10]; //[nGammaClusters];
+    Double_t clusterTimeSpan[10]; //[nGammaClusters];
     Int_t nTotalClusterHits = 0;
-    Double_t *clusterHitEnergy = NULL; //[nTotalClusterHits];
-    Int_t *clusterHitPMT = NULL; //[nTotalClusterHits];
-    Int_t *clusterHitLDFlag = NULL; //[nTotalClusterHits];
-    Double_t *clusterHitLDCorr = NULL; //[nTotalClusterHits];
-    Double_t *clusterHitLDCorrErr = NULL; //[nTotalClusterHits];
-    Double_t *clusterHitSec = NULL; //[nTotalClusterHits];
-    Double_t *clusterHitZ = NULL; //[nTotalClusterHits];
+    Double_t clusterHitEnergy[20]; //[nTotalClusterHits];
+    Int_t clusterHitPMT[20]; //[nTotalClusterHits];
+    Int_t clusterHitLDFlag[20]; //[nTotalClusterHits];
+    Double_t clusterHitLDCorr[20]; //[nTotalClusterHits];
+    Double_t clusterHitLDCorrErr[20]; //[nTotalClusterHits];
+    Double_t clusterHitSec[20]; //[nTotalClusterHits];
+    Double_t clusterHitZ[20]; //[nTotalClusterHits];
 
     Double_t trueElectronEnergy[2];
 
@@ -149,7 +327,6 @@ void filestripper()
     tinput->SetBranchAddress("clusterHitLDCorrErr", clusterHitLDCorrErr);
     tinput->SetBranchAddress("clusterHitSec", clusterHitSec);
     tinput->SetBranchAddress("clusterHitZ", clusterHitZ);
-
 
     toutput->Branch("Event", &Event, "Event/I");
     toutput->Branch("Run", &Run, "Run/I");
@@ -207,11 +384,12 @@ void filestripper()
 
 
 
+    
+    Int_t Nsc;
+    //Int_t Ngg;: Ngg/I                                                  *
+    Float_t Sc[2000][12];
+    //Float_t Gg;: Gg[Ngg][15]/F                                          *
     /*
-    Int_t Nsc;: Nsc/I                                                  *
-    Int_t Ngg;: Ngg/I                                                  *
-    Float_t Sc;: Sc[Nsc][12]/F                                          *
-    Float_t Gg;: Gg[Ngg][15]/F                                          *
     Int_t Nbr_tks;: Nbr_tksc/I                                             *
     Int_t Nbr_pts;: Nbr_ptsc[Nbr_tksc]/B                                   *
     Int_t Ind_points;: Ind_pointsc[Nbr_tksc][200]/b                         *
@@ -221,6 +399,9 @@ void filestripper()
     Float_t Radcc;: Radcc[Nbr_tksc]/F                                      *
     Float_t Hcc;: Hcc[Nbr_tksc]/F                                        *
     Float_t Ecc;: Ecc[Nbr_tksc]/F                                        *
+    */
+    //Float_t Ecc[2];
+    /*
     Float_t Decc;: Decc[Nbr_tksc]/F                                       *
     Float_t Qcc;: Qcc[Nbr_tksc]/F                                        *
     Float_t Prob_radc;: Prob_radcc[Nbr_tksc]/F                                *
@@ -280,18 +461,24 @@ void filestripper()
     Float_t Tofvnt;: Tofvntu[Nvntu]/F                                       *
     */
     Int_t Ntntu = 0;
-    Float_t *Pxntu = nullptr;
-    Float_t *Pyntu = nullptr;
-    Float_t *Pzntu = nullptr;
+    //Float_t *Pxntu = nullptr;
+    //Float_t *Pyntu = nullptr;
+    //Float_t *Pzntu = nullptr;
+    Float_t Pxntu[31];
+    Float_t Pyntu[31];
+    Float_t Pzntu[31];
     /*
     Float_t Toftnt;: Toftntu[Ntntu]/F                                       *
     Int_t Ivntu;: Ivntu[Ntntu]/b                                         *
     Int_t Ipntu;: Ipntu[Ntntu]/b                                         *
     */
+    tchain->SetBranchAddress("Nsc", &Nsc);
+    tchain->SetBranchAddress("Sc", &Sc);
     tchain->SetBranchAddress("run", &run);
     //tchain->SetBranchAddress("date", &date);
     //tchain->SetBranchAddress("time", &time);
     tchain->SetBranchAddress("evntime", &evntime);
+    //tchain->SetBranchAddress("Ecc", &Ecc);
     tchain->SetBranchAddress("Nvntu", &Nvntu);
     tchain->SetBranchAddress("Xvntu", &Xvntu);
     tchain->SetBranchAddress("Yvntu", &Yvntu);
@@ -301,6 +488,40 @@ void filestripper()
     tchain->SetBranchAddress("Pyntu", &Pyntu);
     tchain->SetBranchAddress("Pzntu", &Pzntu);
 
+
+/*
+    // check if tchain is in order by event number
+    // first check order
+    Long64_t okcount{0};
+    Long64_t badcount{0};
+    Long64_t max_chain{tchain->GetEntries()};
+    std::cout << "max_chain=" << max_chain << std::endl;
+    tchain->GetEntry(0);
+    Int_t run1, run2;
+    run1 = -run;
+    for(Long64_t ix_chain{1}; ix_chain < max_chain; ++ ix_chain)
+    //for(Long64_t ix{0}; ix < max_chain - 1; ++ ix)
+    {
+        tchain->GetEntry(ix_chain);
+        Int_t run2 = -run;
+
+        if(run1 <= run2)
+        {
+            // ok
+            ++ okcount;
+        }
+        else
+        {
+            std::cout << run1 << " " << run2 << std::endl;
+            ++ badcount;
+        }
+    
+        run1 = run2;
+    }
+    std::cout << "prog STOP." << std::endl;
+    std::cout << "ok: " << okcount << " bad: " << badcount << std::endl;
+    std::cin.get();
+*/
     /*
     Int_t nElectrons;
     Double_t trueT1;
@@ -334,78 +555,351 @@ void filestripper()
 
     Long64_t count{0};
     Long64_t max{tinput->GetEntries()};
+
+    //Long64_t max_chain{tchain->GetEntries()};
+
+/*
     Long64_t max_chain{tchain->GetEntries()};
-    Long64_t ix_chain{0};
-    Long64_t no_match_start = -1;
+    //Long64_t ix_chain{0};
+    Double_t *trueVertexZ_array = new Double_t[max_chain];
+    for(Long64_t ix{0}; ix < max_chain; ++ ix)
+    {
+        tchain->GetEntry(ix);
+        trueVertexZ_array[ix] = Zvntu;
+    }
+    // sort trueVertexZ_array
+    QuickSort(trueVertexZ_array, 0, max_chain - 1);
+    std::cout << "index built" << std::endl;
+
+    // quick hack check - look for duplicates in trueVertexZ_array
+    // first check order
+    Long64_t okcount{0};
+    Long64_t badcount{0};
+    for(Long64_t ix{0}; ix < max_chain - 1; ++ ix)
+    {
+        if(trueVertexZ_array[ix] <= trueVertexZ_array[ix + 1])
+        {
+            // ok
+            ++ okcount;
+        }
+        else
+        {
+            std::cout << trueVertexZ_array[ix] << " " << trueVertexZ_array[ix + 1] << std::endl;
+            ++ badcount;
+        }
+    }
+    std::cout << "prog STOP." << std::endl;
+    std::cout << "ok: " << okcount << " bad: " << badcount << std::endl;
+    std::cin.get();
+*/
+
+    //Long64_t ix_chain_start{0};
+
+    // count number of matches to check for double matches
+    Long64_t multi_match_count{0};
+    ///Long64_t no_match_start = -1;
     //Long64_t no_match_stop = -1;
+    //Long64_t close_match_R_count{0};
+    //Long64_t close_match_sector_count{0};
+    //Long64_t close_match_Z_count{0};
+    //Int_t Run_current;
+    Long64_t ix_chain_faster = 0;
     for(Long64_t ix{0}; ix < max; ++ ix)
     {
+        if(ix % 1000 == 0)
+        {
+            std::cout << "ix=" << ix << " / " << max << std::endl;
+        }
 
-        std::cout << "Searching, ix=" << ix << std::endl;
+        //std::cout << "Searching, ix=" << ix << std::endl;
+        multi_match_count = 0;
 
         tinput->GetEntry(ix);
         
-        // search for corresponding entry in tchain ttree
-        for(;;)
+        // new 2019-01-14
+        //Run_current = Run;
+        //std::string expression("run==");
+        //expression += std::to_string(-Run);
+        //std::cout << expression << std::endl;
+        //TTree *tchain_filtered = tchain->CopyTree(expression.c_str());
+        //std::cout << tchain_filtered->GetEntries() << std::endl;
+        //std::cin.get();
+        Long64_t max_chain{tchain->GetEntries()};
+        Long64_t ix_chain_start, ix_chain_end, ix_chain_match;
+        for(Long64_t ix_chain{ix_chain_faster}; ix_chain < max_chain; ++ ix_chain)
         {
-            if(ix_chain >= max_chain)
+            tchain->GetEntry(ix_chain);
+            
+            if(-run == Run)
             {
-                //std::cout << "No matching entry for ix=" << ix << " found" << std::endl;
-                if(no_match_start == -1)
-                {
-                    no_match_start = ix;
-                }
-                else
-                {
-                    //if(no_match_stop == -1)
-                    //{
-                    //    
-                    //}
-                    //if(ix > no_match_start + 1)
-                }
+                ix_chain_start = ix_chain;
                 break;
             }
+        }
+        for(Long64_t ix_chain{ix_chain_start + 1}; ix_chain < max_chain; ++ ix_chain)
+        {
             tchain->GetEntry(ix_chain);
 
-            std::cout << "-run=" << -run << " Run=" << Run << std::endl;
-            //std::cout << "evntime=" << evntime << " Event=" << Event << std::endl;
-            std::cout << "trueVertex(" << Xvntu << "," << Yvntu << "," << Zvntu << ")" << " [cartesian] " << std::endl;
-            Double_t thetantu = std::atan2(Yvntu, Xvntu);
-            Double_t sectorntu = thetantu / 18.0;
-            Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
-            std::cout << "trueVertex(" << rntu << "," << sectorntu << "," << Zvntu << ")" << " [cylindrical] " << std::endl;
-            std::cout << "trueVertex(" << trueVertexSector << "," << trueVertexR << "," << trueVertexZ << ")" << " [cylindrical] " << std::endl;
+            if(-run == Run)
+            {
+                //ix_chain_end = ix_chain;
+            }
+            else
+            {
+                ix_chain_end = ix_chain;
+                break;
+            }
+        }
+        // ix_chain_start and ix_chain_end are now set
+        int multi_match_count = 0;
+        for(Long64_t ix_chain{ix_chain_start}; ix_chain < ix_chain_end; ++ ix_chain)
+        {
+            tchain->GetEntry(ix_chain); 
+        
+            int return_flag = 0;
+            
+            SearchFunction(return_flag, Run, trueVertexR, trueVertexSector, trueVertexZ, run, Xvntu, Yvntu, Zvntu);
+            if(return_flag == 1)
+            {
+                if(multi_match_count == 0)
+                {
+                    ix_chain_match = ix_chain;
+                }
+                multi_match_count ++;
+            }
+
+            //void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu)
+            //void SearchFunction(int &return_flag, Int_t Run, Doublt_t trueVertexR, Double_t trueVertexSector, Double_t trueVertexZ, Double_t* trueElectronEnergy, Int_t run, Float_t Xvntu, Float_t Yvntu, Float_t Zvntu)
+        }
+
+        if(multi_match_count == 1)
+        {
+            //std::cout << "match for ix=" << ix << " found: ix_chain_match=" << ix_chain_match << std::endl;
+            tchain->GetEntry(ix_chain_match);
+
+            // write to file
+            GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu);
+            ++ count;
+            toutput->Fill();
+        }
+        else if(multi_match_count == 0)
+        {
+            std::cout << "Error: multi_match_count=0 ! : xi=" << ix << " Run=" << Run <<  std::endl;
             std::cin.get();
+        }
+        else
+        {
+            std::cout << "Error: multi_match_count=" << multi_match_count << " ! : ix=" << ix " Run=" << Run << std::endl;
+            std::cin.get();
+        }
+        ix_chain_faster = ix_chain_start;
+
+
+/*
+        // get index of match using binary search
+        Long64_t L = 0;
+        Long64_t R = max_chain - 1;
+        Double_t T = trueVertexZ;
+        bool success = false;
+        Long64_t return_index = -1;
+        while(L <= R)
+        {
+            Long64_t m = (L + R) / 2;
+            if(trueVertexZ_array[m] == T)
+            {
+                success = true;
+                return_index = m;
+                break;
+            }
+            else if(trueVertexZ_array[m] < T)
+            {
+                L = m + 1;
+            }
+            else if(trueVertexZ_array[m] > T)
+            {
+                R = m - 1;
+            }
+        }
+        //success = false;
+        Long64_t ix_chain_0 = 0;
+        Long64_t ix_chain_1 = 0;
+        if(success == true)
+        {
+            ix_chain_0 = return_index;
+            while(trueVertexZ_array[ix_chain_0] == T)
+            {
+                ix_chain_0 --;
+            }
+            while(trueVertexZ_array[ix_chain_1] == T)
+            {
+                ix_chain_1 ++;
+            }
+            ix_chain_1 = ix_chain_0 + 1;
+            // this just makes for loop below work
+        }
+*/
+
+#if 0
+        Long64_t max_chain{tchain->GetEntries()};
+        // search for corresponding entry in tchain ttree
+        std::cout << "starting search at ix_chain_start=" << ix_chain_start << std::endl;
+        for(Long64_t ix_chain{ix_chain_start}; ix_chain < max_chain; ++ ix_chain)
+        //for(Long64_t ix_chain{ix_chain_0}; ix_chain < ix_chain_1; ++ ix_chain)
+        {
+            // set resume search point to be the next event
+            //ix_chain_start = ix_chain + 1;
+            // not sure if this is the correct place for this statement, so moving
+            // it inside the if condition, where I know it will work but will not be
+            // optimal
+            
+            tchain->GetEntry(ix_chain);
+
+            Double_t thetantu = std::atan2(Yvntu, Xvntu);
+            Double_t sectorntu = (2.5 / std::atan(1.0)) * thetantu; // / 18.0;
+            Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
 
             // match variables
             if(-run == Run)
             {
-                /*
-                if(evntime == Event)
-                */
-                bool vertex_match = true;
-                //if(Xvntu != ) vertex_match = false;
-                //if(Yvntu != ) vertex_match = false;
-                //if(Zvntu != ) vertex_match = false;
-                if(std::abs(trueVertexSector - sectorntu) > 1.0e-6) vertex_match = false;
-                if(std::abs(trueVertexR - rntu) > 1.0e-6) vertex_match = false;
-                if(std::abs(trueVertexZ - Zvntu) > 1.0e-6) vertex_match = false;
-                if(vertex_match == true)
-                {
+                //ix_chain_start = ix_chain;
 
+                // if run matches, check if event is a complete match
+
+                bool close_match_R = false;
+                bool close_match_sector = false;
+                bool close_match_Z = false;
+                int close_match_count = 0;
+                if(std::abs(trueVertexR - rntu) < 1.0e-4)
+                //if(trueVertexR == rntu)
+                {
+                    //std::cout << "close match for R" << std::endl;
+                    //close_match = true;
+                    close_match_R = true;
+                    //++ close_match_R_count;
+                    ++ close_match_count;
+                }
+                if(std::abs(trueVertexSector - sectorntu) < 1.0e-6)
+                //if(trueVertexSector == sectorntu)
+                {
+                    //std::cout << "close match for sector" << std::endl;
+                    //close_match = true;
+                    close_match_sector = true;
+                    //++ close_match_sector_count;
+                    ++ close_match_count;
+                }
+                //if(std::abs(trueVertexZ - Zvntu) < 1.0e-5)
+                if(trueVertexZ == Zvntu)
+                {
+                    //std::cout << "close match for Z" << std::endl;
+                    //close_match = true;
+                    close_match_Z = true;
+                    //++ close_match_Z_count;
+                    ++ close_match_count;
+                }
+                //if(close_match == true)
+                if(close_match_count == 3)
+                {
+                    /***
                     if(no_match_start != -1)
                     {
                         std::cout << "No matching entry for ix range: " << no_match_start << " < ix < " << ix - 1 << std::endl;
                         no_match_start = -1;
                     }
+                   ***/
+#define DEBUG 0
+#if DEBUG
+                    std::cout << "ix=" << ix << " -> ix_chain=" << ix_chain << std::endl;
+                    std::cout << "delta: r=" << std::abs(trueVertexR - rntu) << ", s=" << std::abs(trueVertexSector - sectorntu) << ", Z=" << std::abs(trueVertexZ - Zvntu) << std::endl;
+#endif
+#if DEBUG
                     std::cout << "Found corresponding event: ix=" << ix << " ix_chain=" << ix_chain << std::endl;
 
+                    std::cout << "ix=" << ix << " ix_chain=" << ix_chain << std::endl;
+                    std::cout << "-run=" << -run << " Run=" << Run << std::endl;
+                    //std::cout << "evntime=" << evntime << " Event=" << Event << std::endl;
+                    std::cout << "original files:  trueVertex(" << Xvntu << "," << Yvntu << "," << Zvntu << ")" << " [cartesian] " << std::endl;
+                    std::cout << "original files:  trueVertex(" << rntu << "," << sectorntu << "," << Zvntu << ")" << " [cylindrical] " << std::endl;
+                    std::cout << "processed files: trueVertex(" << trueVertexR << "," << trueVertexSector  << "," << trueVertexZ << ")" << " [cylindrical] " << std::endl;
+                    std::cout << "other variables..." << std::endl;
+                    std::cout << "Event Time: " << eventTime << ", " << evntime << ", " << time << std::endl;
+                    std::cout << "Ntntu=" << Ntntu << std::endl;
+                    //std::cout << "Pxntu=" << Pxntu << std::endl;
+                    //std::cout << "Pyntu=" << Pyntu << std::endl;
+                    //std::cout << "Pzntu=" << Pzntu << std::endl;
+                    // Note: think these might be in GeVs
+                    std::cout << "Pxntu[0]=" << Pxntu[0] << std::endl;
+                    std::cout << "Pyntu[0]=" << Pyntu[0] << std::endl;
+                    std::cout << "Pzntu[0]=" << Pzntu[0] << std::endl;
+                    std::cout << "Pxntu[1]=" << Pxntu[1] << std::endl;
+                    std::cout << "Pyntu[1]=" << Pyntu[1] << std::endl;
+                    std::cout << "Pzntu[1]=" << Pzntu[1] << std::endl;
+#endif
+                    const Double_t electron_rest_mass = 1.0e-3 * 0.51099895; // GeV
+                    const Double_t m = electron_rest_mass;
+                    const Double_t m2 = electron_rest_mass * electron_rest_mass;
+                    Double_t p0_2 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0]; // GeV
+                    Double_t electron_energy_0 = std::sqrt(p0_2 + m2) - m; // GeV
+                    Double_t p1_2 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
+                    Double_t electron_energy_1 = std::sqrt(p1_2 + m2) - m;
+                    //Double_t electron_energy_0 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0];
+                    //electron_energy_0 = 1.0e3 * std::sqrt(electron_energy_0);
+                    //Double_t electron_energy_1 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
+                    //electron_energy_1 = 1.0e3 * std::sqrt(electron_energy_1);
+                    if(electron_energy_0 < electron_energy_1) std::swap(electron_energy_0, electron_energy_1);
+#if DEBUG
+                    std::cout << "original files:  trueEnergy(" << 1.0e+03 * electron_energy_0 << ", " << 1.0e+03 * electron_energy_1 << ") [MeV] " << std::endl;
+                    std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << ") [MeV] " << std::endl;
+                    std::cout << "processed files: recoEnergy(" << electronEnergy[0] << ", " << electronEnergy[1] << ") [MeV] " << std::endl;
+                    //std::cout << "Electron Energy: " << electronEnergy[0] << ", " << 1.0e3 * electron_energy_0 << std::endl;
+                    //std::cout << "Electron Energy: " << electronEnergy[1] << ", " << 1.0e3 * electron_energy_1 << std::endl;
+                    //std::cout << "Ecc: " << Ecc[0] << ", " << Ecc[1] << std::endl;
+                    //std::cout << "Sc: " << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << std::endl;
+#endif
+
+                    //std::cin.get();
+
+                    // TODO: can simply set branch addresses to input variables?
+                    // not sure if multiplication is required
+                    trueElectronEnergy[0] = 1.0e+03 * electron_energy_0;
+                    trueElectronEnergy[1] = 1.0e+03 * electron_energy_1;
+
+                    if(multi_match_count == 0)
+                    {
+                        std::cout << "match for ix=" << ix << " found: ix_chain=" << ix_chain << std::endl;
+                        ix_chain_start = ix_chain;
+                        // write to file
+                        ++ count;
+                        toutput->Fill();
+                    }
+
+                    // NOTE: enable these two lines to make code work, but not check for duplicate events
                     ++ ix_chain;
                     break;
+                    ++ multi_match_count;
                 }
             }
+            else // if(run == -Run)
+            {
+                // run variable does not match
+                // if we already found a match, break here
+                // we need to start looking for next event in
+                // tinput
+                if(multi_match_count > 0)
+                {
+                    // NOTE: this broke my code, because there can be events with repeated run numbers in tinput
+                    //ix_chain_start = ix_chain;
+                    //std::cout << "ix_chain=" << ix_chain << " ix_chain_start set to " << ix_chain_start << " multi_match_count=" << multi_match_count << std::endl;
+                    break;
+                }
+                // else is no match was found, do nothing?
+                else
+                {
+                    //std::cout << "no match found for ix=" << ix << " ix_chain=" << ix_chain << std::endl;
+                }
+            }
+            
 
-            ++ ix_chain;
+            //++ ix_chain;
 
             /*
             if(ix_chain % 1000000 == 0)
@@ -415,14 +909,21 @@ void filestripper()
             */
         }
 
+        if(multi_match_count > 1)
+        {
+            std::cout << "ix=" << ix << " multiple matches found in data" << std::endl;
+        }
+#endif
 
-        ++ count;
-        toutput->Fill();
+
     }
-    if(no_match_start != -1)
-    {
-        std::cout << "No matching entry for ix range: " << no_match_start << " < ix < " << max - 1 << std::endl;
-    }
+    //if(no_match_start != -1)
+    //{
+    //    std::cout << "No matching entry for ix range: " << no_match_start << " < ix < " << max - 1 << std::endl;
+    //}
+    //std::cout << "close_match_R_count=" << close_match_R_count << std::endl;
+    //std::cout << "close_match_sector_count=" << close_match_sector_count << std::endl;
+    //std::cout << "close_match_Z_count=" << close_match_Z_count << std::endl;
     std::cout << "done" << std::endl;
 
     toutput->Write();
@@ -431,9 +932,10 @@ void filestripper()
     finput->Close();
     //tchain->Close();
 
-    /*
+    
     std::cout << count << "/" << max << std::endl;;
-    */
+    
 
+    /*delete [] trueVertexZ_array;*/
 
 }
