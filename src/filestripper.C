@@ -122,7 +122,18 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
     
 }
 
-void SearchFunction(int &return_flag, Int_t Run, Double_t trueVertexR, Double_t trueVertexSector, Double_t trueVertexZ, Int_t run, Float_t Xvntu, Float_t Yvntu, Float_t Zvntu)
+void SearchFunction(
+    int &return_flag,
+    Int_t Run,
+    Double_t trueVertexR,
+    Double_t trueVertexSector,
+    Double_t trueVertexZ,
+    Int_t run,
+    Float_t Xvntu,
+    Float_t Yvntu,
+    Float_t Zvntu,
+    Long64_t ix,
+    Long64_t ix_chain)
 {
         
     Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
@@ -161,7 +172,32 @@ void SearchFunction(int &return_flag, Int_t Run, Double_t trueVertexR, Double_t 
         // check all
         if(close_match_count == 3)
         {
+            std::cout << std::endl;
+            std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexR; difference: " << std::abs(trueVertexR - rntu) << std::endl;
+            std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexSector; difference: " << std::abs(trueVertexSector - sectorntu) << std::endl;
+            std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexZ; difference: " << std::abs(trueVertexZ - Zvntu) << std::endl;
+            std::cin.get();
+
             return_flag = 1;
+        }
+        else
+        {
+            if(close_match_count > 0)
+            {
+                std::cout << std::endl;
+            }
+            if(close_match_R)
+            {
+                std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexR; difference: " << std::abs(trueVertexR - rntu) << std::endl;
+            }
+            if(close_match_sector)
+            {
+                std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexSector; difference: " << std::abs(trueVertexSector - sectorntu) << std::endl;
+            }
+            if(close_match_Z)
+            {
+                std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexZ; difference: " << std::abs(trueVertexZ - Zvntu) << std::endl;
+            }
         }
     }
 }
@@ -210,14 +246,19 @@ void filestripper()
     //TFile *finput = new TFile("/unix/nemo3/users/sblot/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output.root");
     //TFile *finput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output_sorted.root");
     //TFile *finput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output.root");
-    TFile *finput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output.root");
+    //TFile *finput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output.root");
                               //unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output.root
     //TTree *tinput = (TTree*)finput->Get("Nd150_2eNg");
+
+    // working at home
+    TFile *finput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output.root");
     TTree *tinput = (TTree*)finput->Get("Nd150_2eNg/Nd150_2eNg");
 
     //TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/betabeta/data_2e/Nd150_2eNg_output_truth.root", "recreate");
     //TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output_truth.root", "recreate");
-    TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth.root", "recreate");
+    //TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth.root", "recreate");
+
+    TFile *foutput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth_NEW.root", "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
     TTree *toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
@@ -447,8 +488,8 @@ void filestripper()
     Float_t Zvert;: Zvert/F                                                *
     */
     Int_t run = 0;
-    Int_t date = 0;
-    Int_t time = 0;
+//    Int_t date = 0;
+//    Int_t time = 0;
     Int_t evntime = 0;
     /*
     Float_t tau_sc_sav;: tau_sc_save/F                                        *
@@ -596,23 +637,23 @@ void filestripper()
     //Long64_t ix_chain_start{0};
 
     // count number of matches to check for double matches
-    Long64_t multi_match_count{0};
+//    Long64_t multi_match_count{0};
     ///Long64_t no_match_start = -1;
     //Long64_t no_match_stop = -1;
     //Long64_t close_match_R_count{0};
     //Long64_t close_match_sector_count{0};
     //Long64_t close_match_Z_count{0};
     //Int_t Run_current;
-    Long64_t ix_chain_faster = 0;
+//    Long64_t ix_chain_faster = 0;
     for(Long64_t ix{0}; ix < max; ++ ix)
     {
-        if(ix % 1000 == 0)
+        if(ix % 10 == 0)
         {
             std::cout << "ix=" << ix << " / " << max << std::endl;
         }
 
         //std::cout << "Searching, ix=" << ix << std::endl;
-        multi_match_count = 0;
+//        multi_match_count = 0;
 
         tinput->GetEntry(ix);
         
@@ -626,7 +667,8 @@ void filestripper()
         //std::cin.get();
         Long64_t max_chain{tchain->GetEntries()};
         Long64_t ix_chain_start, ix_chain_end, ix_chain_match;
-        for(Long64_t ix_chain{ix_chain_faster}; ix_chain < max_chain; ++ ix_chain)
+        //for(Long64_t ix_chain{ix_chain_faster}; ix_chain < max_chain; ++ ix_chain)
+        for(Long64_t ix_chain{0}; ix_chain < max_chain; ++ ix_chain)
         {
             tchain->GetEntry(ix_chain);
             
@@ -650,15 +692,33 @@ void filestripper()
                 break;
             }
         }
+
+        std::cout << "ix=" << ix << ", ix_chain_start=" << ix_chain_start << " ix_chain_end=" << ix_chain_end << std::endl;
+        std::cin.get();
+
         // ix_chain_start and ix_chain_end are now set
-        int multi_match_count = 0;
+        Long64_t multi_match_count = 0;
         for(Long64_t ix_chain{ix_chain_start}; ix_chain < ix_chain_end; ++ ix_chain)
         {
             tchain->GetEntry(ix_chain); 
         
             int return_flag = 0;
-            
-            SearchFunction(return_flag, Run, trueVertexR, trueVertexSector, trueVertexZ, run, Xvntu, Yvntu, Zvntu);
+
+            /*            
+            void SearchFunction(
+                int &return_flag,
+                Int_t Run,
+                Double_t trueVertexR,
+                Double_t trueVertexSector,
+                Double_t trueVertexZ,
+                Int_t run,
+                Float_t Xvntu,
+                Float_t Yvntu,
+                Float_t Zvntu,
+                Long64_t ix,
+                Long64_t ix_chain)
+            */
+            SearchFunction(return_flag, Run, trueVertexR, trueVertexSector, trueVertexZ, run, Xvntu, Yvntu, Zvntu, ix, ix_chain);
             if(return_flag == 1)
             {
                 if(multi_match_count == 0)
@@ -689,10 +749,10 @@ void filestripper()
         }
         else
         {
-            std::cout << "Error: multi_match_count=" << multi_match_count << " ! : ix=" << ix " Run=" << Run << std::endl;
+            std::cout << "Error: multi_match_count=" << multi_match_count << " ! : ix=" << ix << " Run=" << Run << std::endl;
             std::cin.get();
         }
-        ix_chain_faster = ix_chain_start;
+//        ix_chain_faster = ix_chain_start;
 
 
 /*
