@@ -66,7 +66,6 @@ void orderchain()
 
     Int_t run_min = -1800;
     Int_t run_max = -9100;
-    run_max = -2100;
 
 
     TFile *finput = nullptr;
@@ -108,7 +107,7 @@ void orderchain()
         {
             found_this_file = 0;
 
-            std::cout << "i=" << i << std::endl;
+            //std::cout << "i=" << i << std::endl;
 
             std::string name = names[i];
             std::string nameout = name.substr(0, name.find(".")) + "_small.root";
