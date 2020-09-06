@@ -66,6 +66,7 @@ void orderchain()
 
     Int_t run_min = -1800;
     Int_t run_max = -9100;
+    run_max = -2100;
 
 
     TFile *finput = nullptr;
@@ -163,7 +164,7 @@ void orderchain()
         std::cout << "found " << found_total << " matching run numbers in all files" << std::endl;
     }
 
-
+    foutput->cd();
     toutput->Write();
     foutput->Close();
 
