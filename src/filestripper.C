@@ -733,17 +733,17 @@ void filestripper()
             auto current_time = std::chrono::high_resolution_clock::now();
             auto runtime_seconds = std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time);
             auto runtime_hours = std::chrono::duration_cast<std::chrono::hours>(current_time - start_time);
-            std::cout << "Runtime: " << runtime_seconds << " s, " << runtime_hours << " h" << std::endl;
+            std::cout << "Runtime: " << runtime_seconds.count() << " s, " << runtime_hours.count() << " h" << std::endl;
             Int_t total_runs = Run_max - Run_min;
             Int_t current_runs = Run - Run_min;
             Int_t todo_runs = total_runs - current_runs;
-            double fraction_complete = (double)current_runs / (double)total_runs << std::endl;
+            double fraction_complete = (double)current_runs / (double)total_runs;
             std::cout << "Percentage complete: " << 100.0 * fraction_complete << " %" << std::endl;
             try
             {
-                double estimated_total_time = runtime_seconds / fraction_complete;
-                double estimated_time_remaining = estimated_total_time - runtime_seconds;
-                double estimated_time_remaining_hours = runtime_hours / fraction_complete - runtime_hours;
+                double estimated_total_time = runtime_seconds.count() / fraction_complete;
+                double estimated_time_remaining = estimated_total_time - runtime_seconds.count();
+                double estimated_time_remaining_hours = runtime_hours.count() / fraction_complete - runtime_hours.count();
                 std::cout << "Estimated time to completion: " << estimated_time_remaining << " s, " << estimated_time_remaining_hours << " h" << std::endl;
             }
             catch(...)
