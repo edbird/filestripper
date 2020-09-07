@@ -233,8 +233,9 @@ void filestripper()
     // datalist file:
     // /home/blotsd/NEMO3/Nd150_analysis/DataLists/nd150_61_rot_nd150.lst
 
-    const int NUM_NAMES = 1; // 20
-    std::string names[NUM_NAMES];
+
+////    const int NUM_NAMES = 1; // 20
+////    std::string names[NUM_NAMES];
     /*names[0] = "foils_nd150_61_rot_nd150_101_01.root";
     names[1] = "foils_nd150_61_rot_nd150_101_02.root";
     names[2] = "foils_nd150_61_rot_nd150_102_01.root";
@@ -255,14 +256,19 @@ void filestripper()
     names[17] = "foils_nd150_61_rot_nd150_109_02.root";
     names[18] = "foils_nd150_61_rot_nd150_110_01.root";
     names[19] = "foils_nd150_61_rot_nd150_110_02.root";*/
-    names[0] = "foils_nd150_61_rot_nd150_1xx_xx.root";
+////    names[0] = "foils_nd150_61_rot_nd150_1xx_xx.root";
 
+////    TChain *tchain = new TChain("h10", "h10");
+////    for(int i = 0; i < NUM_NAMES; ++ i)
+////    {
+////        std::cout << "add: i=" << i << " name[i]=" << names[i] << std::endl; 
+////        tchain->Add(names[i].c_str());
+////    }
+
+    TString tchain_dir = "/mnt/ramdisk/";
+    TString tchain_fname = "foils_nd150_61_rot_nd150_1xx_xx.root";
     TChain *tchain = new TChain("h10", "h10");
-    for(int i = 0; i < NUM_NAMES; ++ i)
-    {
-        std::cout << "add: i=" << i << " name[i]=" << names[i] << std::endl; 
-        tchain->Add(names[i].c_str());
-    }
+    tchain->Add(tchain_dir + tchain_fname);
 
     std::cout << "All files added in TChain" << std::endl;
     //std::cin.get();
@@ -282,7 +288,11 @@ void filestripper()
     //TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2b2n_m4/Nd150_2eNg_output_truth.root", "recreate");
     //TFile *foutput = new TFile("/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth.root", "recreate");
 
-    TFile *foutput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth_NEW.root", "recreate");
+    //TFile *foutput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth_NEW.root", "recreate");
+    //TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
+    TString foutput_dir = "/mnt/ramdisk/";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_2.root";
+    TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
     TTree *toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
@@ -705,8 +715,10 @@ void filestripper()
     //Int_t Run_current;
 
     tinput->GetEntry(0);
-    Int_t Run_min = Run;
-    Int_t Run_max = 3000;
+    //Int_t Run_min = Run;
+    //Int_t Run_max = 3000;
+    Int_t Run_min = 3000;
+    Int_t Run_max = 4000;
     // TODO: change output file name
 
     auto start_time = std::chrono::high_resolution_clock::now();
