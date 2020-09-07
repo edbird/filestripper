@@ -1,6 +1,7 @@
 
 
 #include <iostream>
+#include <chrono>
 
 // Root headers
 #include "TFile.h"
@@ -702,15 +703,53 @@ void filestripper()
     //Long64_t close_match_sector_count{0};
     //Long64_t close_match_Z_count{0};
     //Int_t Run_current;
+
+    tinput->GetEntry(0);
+    Int_t Run_min = Run;
+    Int_t Run_max = 3000;
+    // TODO: change output file name
+
+    auto start_time = std::chrono::high_resolution_clock::now();
+
     Long64_t ix_chain_faster = 0;
     for(Long64_t ix{0}; ix < max; ++ ix)
     {
         tinput->GetEntry(ix);
 
+        if(Run < Run_min)
+        {
+            continue;
+        }
+        else if(Run >= Run_max)
+        {
+            break;
+        }
+
         if(ix % 1 == 0)
         {
             std::cout << "ix=" << ix << " / " << max << std::endl;
             std::cout << "looking for Run=" << Run << std::endl;
+
+            auto current_time = std::chrono::high_resolution_clock::now();
+            auto runtime_seconds = std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time);
+            auto runtime_hours = std::chrono::duration_cast<std::chrono::hours>(current_time - start_time);
+            std::cout << "Runtime: " << runtime_seconds << " s, " << runtime_hours << " h" << std::endl;
+            Int_t total_runs = Run_max - Run_min;
+            Int_t current_runs = Run - Run_min;
+            Int_t todo_runs = total_runs - current_runs;
+            double fraction_complete = (double)current_runs / (double)total_runs << std::endl;
+            std::cout << "Percentage complete: " << 100.0 * fraction_complete << " %" << std::endl;
+            try
+            {
+                double estimated_total_time = runtime_seconds / fraction_complete;
+                double estimated_time_remaining = estimated_total_time - runtime_seconds;
+                double estimated_time_remaining_hours = runtime_hours / fraction_complete - runtime_hours;
+                std::cout << "Estimated time to completion: " << estimated_time_remaining << " s, " << estimated_time_remaining_hours << " h" << std::endl;
+            }
+            catch(...)
+            {
+                // do nothing
+            }
         }
 
         //std::cout << "Searching, ix=" << ix << std::endl;
