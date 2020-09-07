@@ -88,6 +88,11 @@ void qst()
     std::cin.get();
 }
 
+
+std::size_t swap_count_true = 0;
+std::size_t swap_count_false = 0;
+
+
 void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu)
 {
 
@@ -102,7 +107,17 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
     //electron_energy_0 = 1.0e3 * std::sqrt(electron_energy_0);
     //Double_t electron_energy_1 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
     //electron_energy_1 = 1.0e3 * std::sqrt(electron_energy_1);
-    if(electron_energy_0 < electron_energy_1) std::swap(electron_energy_0, electron_energy_1);
+//    if(electron_energy_0 < electron_energy_1) std::swap(electron_energy_0, electron_energy_1);
+    if(electron_energy_0 < electron_energy_1)
+    {
+        //std::cout << "swap TRUE" << std::endl;
+        ++ swap_count_true;
+    }
+    else
+    {
+        //std::cout << "swap FALSE" << std::endl;
+        ++ swap_count_false;
+    }
 
 #define DEBUG 0
 #if DEBUG
@@ -150,7 +165,7 @@ void SearchFunction(
         bool close_match_sector = false;
         bool close_match_Z = false;
         int close_match_count = 0;
-        if(std::abs(trueVertexR - rntu) < 1.0e-4)
+        if(std::abs(trueVertexR - rntu) < 5.0e-5)
         //if(trueVertexR == rntu)
         {
             close_match_R = true;
@@ -172,32 +187,38 @@ void SearchFunction(
         // check all
         if(close_match_count == 3)
         {
+        /*
             std::cout << std::endl;
             std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexR; difference: " << std::abs(trueVertexR - rntu) << std::endl;
             std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexSector; difference: " << std::abs(trueVertexSector - sectorntu) << std::endl;
             std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexZ; difference: " << std::abs(trueVertexZ - Zvntu) << std::endl;
-            std::cin.get();
+        */
+            //std::cin.get();
 
             return_flag = 1;
         }
         else
         {
+            /*
             if(close_match_count > 0)
             {
                 std::cout << std::endl;
             }
-            if(close_match_R)
+            */
+            /*
+            if(close_match_R == true)
             {
                 std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexR; difference: " << std::abs(trueVertexR - rntu) << std::endl;
             }
-            if(close_match_sector)
+            if(close_match_sector == true)
             {
                 std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexSector; difference: " << std::abs(trueVertexSector - sectorntu) << std::endl;
             }
-            if(close_match_Z)
+            if(close_match_Z == true)
             {
                 std::cout << "ix_chain=" << ix_chain << " ix=" << ix << " close match for trueVertexZ; difference: " << std::abs(trueVertexZ - Zvntu) << std::endl;
             }
+            */
         }
     }
 }
@@ -211,8 +232,9 @@ void filestripper()
     // datalist file:
     // /home/blotsd/NEMO3/Nd150_analysis/DataLists/nd150_61_rot_nd150.lst
 
-    std::string names[20];
-    names[0] = "foils_nd150_61_rot_nd150_101_01.root";
+    const int NUM_NAMES = 1; // 20
+    std::string names[NUM_NAMES];
+    /*names[0] = "foils_nd150_61_rot_nd150_101_01.root";
     names[1] = "foils_nd150_61_rot_nd150_101_02.root";
     names[2] = "foils_nd150_61_rot_nd150_102_01.root";
     names[3] = "foils_nd150_61_rot_nd150_102_02.root";
@@ -231,10 +253,11 @@ void filestripper()
     names[16] = "foils_nd150_61_rot_nd150_109_01.root";
     names[17] = "foils_nd150_61_rot_nd150_109_02.root";
     names[18] = "foils_nd150_61_rot_nd150_110_01.root";
-    names[19] = "foils_nd150_61_rot_nd150_110_02.root";
+    names[19] = "foils_nd150_61_rot_nd150_110_02.root";*/
+    names[0] = "foils_nd150_61_rot_nd150_1xx_xx.root";
 
     TChain *tchain = new TChain("h10", "h10");
-    for(int i = 0; i < 20; ++ i)
+    for(int i = 0; i < NUM_NAMES; ++ i)
     {
         std::cout << "add: i=" << i << " name[i]=" << names[i] << std::endl; 
         tchain->Add(names[i].c_str());
@@ -490,7 +513,7 @@ void filestripper()
     Int_t run = 0;
 //    Int_t date = 0;
 //    Int_t time = 0;
-    Int_t evntime = 0;
+///    Int_t evntime = 0;
     /*
     Float_t tau_sc_sav;: tau_sc_save/F                                        *
     */
@@ -518,7 +541,7 @@ void filestripper()
     tchain->SetBranchAddress("run", &run);
     //tchain->SetBranchAddress("date", &date);
     //tchain->SetBranchAddress("time", &time);
-    tchain->SetBranchAddress("evntime", &evntime);
+////    tchain->SetBranchAddress("evntime", &evntime);
     //tchain->SetBranchAddress("Ecc", &Ecc);
     tchain->SetBranchAddress("Nvntu", &Nvntu);
     tchain->SetBranchAddress("Xvntu", &Xvntu);
@@ -594,6 +617,41 @@ void filestripper()
 
     */
 
+
+    // check tchain run numbers in order
+    // 2020-09-07: check passed on foils_nd150_61_rot_nd150_1xx_xx.root
+    if(0)
+    {
+        Long64_t max_chain{tchain->GetEntries()};
+        tchain->GetEntry(0);
+        Long64_t run_last = run;
+        for(Long64_t ix_chain{1}; ix_chain < max_chain; ++ ix_chain)
+        {
+            tchain->GetEntry(ix_chain);
+
+            if(run == run_last)
+            {
+                // do nothing, ok
+            }
+            else if(run == run_last - 1)
+            {
+                // do nothing, ok
+            }
+            else if(run < run_last - 1)
+            {
+                std::cout << "run: " << run_last << " -> " << run << std::endl;
+            }
+            else
+            {
+                std::cout << "ERROR: run=" << run << " run_last=" << run_last << std::endl;
+                std::cin.get();
+            }
+
+            run_last = run;
+        }
+    }
+
+
     Long64_t count{0};
     Long64_t max{tinput->GetEntries()};
 
@@ -644,18 +702,20 @@ void filestripper()
     //Long64_t close_match_sector_count{0};
     //Long64_t close_match_Z_count{0};
     //Int_t Run_current;
-//    Long64_t ix_chain_faster = 0;
+    Long64_t ix_chain_faster = 0;
     for(Long64_t ix{0}; ix < max; ++ ix)
     {
-        if(ix % 10 == 0)
+        tinput->GetEntry(ix);
+
+        if(ix % 1 == 0)
         {
             std::cout << "ix=" << ix << " / " << max << std::endl;
+            std::cout << "looking for Run=" << Run << std::endl;
         }
 
         //std::cout << "Searching, ix=" << ix << std::endl;
 //        multi_match_count = 0;
 
-        tinput->GetEntry(ix);
         
         // new 2019-01-14
         //Run_current = Run;
@@ -667,20 +727,26 @@ void filestripper()
         //std::cin.get();
         Long64_t max_chain{tchain->GetEntries()};
         Long64_t ix_chain_start, ix_chain_end, ix_chain_match;
-        //for(Long64_t ix_chain{ix_chain_faster}; ix_chain < max_chain; ++ ix_chain)
-        for(Long64_t ix_chain{0}; ix_chain < max_chain; ++ ix_chain)
+        //std::cout << "ix_chain_faster=" << ix_chain_faster << std::endl;
+        for(Long64_t ix_chain{ix_chain_faster}; ix_chain < max_chain; ++ ix_chain)
+        //for(Long64_t ix_chain{0}; ix_chain < max_chain; ++ ix_chain)
         {
             tchain->GetEntry(ix_chain);
+            //std::cout << "ix_chain=" << ix_chain << " run=" << run << std::endl;
+            //std::cin.get();
             
             if(-run == Run)
             {
                 ix_chain_start = ix_chain;
+                //std::cout << "ix_chain_start=" << ix_chain_start << std::endl;
                 break;
             }
         }
         for(Long64_t ix_chain{ix_chain_start + 1}; ix_chain < max_chain; ++ ix_chain)
         {
             tchain->GetEntry(ix_chain);
+            //std::cout << "ix_chain=" << ix_chain << " run=" << run << std::endl;
+            //std::cin.get();
 
             if(-run == Run)
             {
@@ -689,12 +755,14 @@ void filestripper()
             else
             {
                 ix_chain_end = ix_chain;
+                ix_chain_faster = ix_chain;
+                //std::cout << "ix_chain_end=" << ix_chain_end << " ix_chain_faster=" << ix_chain_faster << std::endl;
                 break;
             }
         }
 
-        std::cout << "ix=" << ix << ", ix_chain_start=" << ix_chain_start << " ix_chain_end=" << ix_chain_end << std::endl;
-        std::cin.get();
+        //std::cout << "ix=" << ix << ", ix_chain_start=" << ix_chain_start << " ix_chain_end=" << ix_chain_end << std::endl;
+        //std::cin.get();
 
         // ix_chain_start and ix_chain_end are now set
         Long64_t multi_match_count = 0;
@@ -737,6 +805,15 @@ void filestripper()
             //std::cout << "match for ix=" << ix << " found: ix_chain_match=" << ix_chain_match << std::endl;
             tchain->GetEntry(ix_chain_match);
 
+            /*
+            Double_t rntu = std::sqrt(Xvntu * Xvntu + Yvntu * Yvntu);
+            Double_t thetantu = std::atan2(Yvntu, Xvntu);
+            Double_t sectorntu = (2.5 / std::atan(1.0)) * thetantu; // / 18.0;
+            std::cout << "ix_chain_match=" << ix_chain_match << " ix=" << ix << " close match for trueVertexR; difference: " << std::abs(trueVertexR - rntu) << std::endl;
+            std::cout << "ix_chain_match=" << ix_chain_match << " ix=" << ix << " close match for trueVertexSector; difference: " << std::abs(trueVertexSector - sectorntu) << std::endl;
+            std::cout << "ix_chain_match=" << ix_chain_match << " ix=" << ix << " close match for trueVertexZ; difference: " << std::abs(trueVertexZ - Zvntu) << std::endl;
+            */
+
             // write to file
             GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu);
             ++ count;
@@ -752,7 +829,6 @@ void filestripper()
             std::cout << "Error: multi_match_count=" << multi_match_count << " ! : ix=" << ix << " Run=" << Run << std::endl;
             std::cin.get();
         }
-//        ix_chain_faster = ix_chain_start;
 
 
 /*
@@ -985,6 +1061,8 @@ void filestripper()
     //std::cout << "close_match_sector_count=" << close_match_sector_count << std::endl;
     //std::cout << "close_match_Z_count=" << close_match_Z_count << std::endl;
     std::cout << "done" << std::endl;
+    std::cout << "swap_count_true=" << swap_count_true << std::endl;
+    std::cout << "swap_count_false=" << swap_count_false << std::endl;
 
     toutput->Write();
     foutput->Close();
