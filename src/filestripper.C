@@ -291,7 +291,7 @@ void filestripper()
     //TFile *foutput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth_NEW.root", "recreate");
     //TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
     TString foutput_dir = "/mnt/ramdisk/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_1.root";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_0.root";
     TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
@@ -714,13 +714,28 @@ void filestripper()
     //Long64_t close_match_Z_count{0};
     //Int_t Run_current;
 
+    tinput->GetEntry(tinput->GetEntries() - 1);
+    const Int_t Run_last = Run;
     tinput->GetEntry(0);
-    //Int_t Run_min = Run;
-    //Int_t Run_max = 3000; // first file
+    const Int_t Run_first = Run;
+    std::cout << "Run_first=" << Run_first << " Run_last=" << Run_last << std::endl;
+    // list of file name extensions and start / end run numbers
+    // extension    start       end
+    // _0           Run_first   2500
+    // _1           2500        3000
+    // _2           3000        3500
+    // _3           3500        4000
+    //
+    //
+    //
+    Int_t Run_min = Run_first;
+    Int_t Run_max = 2500; // ...NEW_0
+    //Int_t Run_min = 2500;
+    //Int_t Run_max = 3000; // ...NEW_2
     //Int_t Run_min = 3000;
     //Int_t Run_max = 4000; // ...NEW_2
-    Int_t Run_min = 4000;
-    Int_t Run_max = 4500; // ...NEW_3
+    //Int_t Run_min = 4000;
+    //Int_t Run_max = 4500; // ...NEW_3
 
     // TODO: change output file name
 
