@@ -739,7 +739,7 @@ void filestripper()
 
     // TODO: change output file name
 
-    std::cout << "last chance to check important parameters" << std::endl
+    std::cout << "last chance to check important parameters" << std::endl;
     std::cout << "Run_min=" << Run_min << " Run_max=" << Run_max << std::endl;
     std::cout << "Output file directory: " << foutput_dir << std::endl;
     std::cout << "Output file name: " << foutput_fname << std::endl;
