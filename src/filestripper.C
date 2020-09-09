@@ -291,7 +291,7 @@ void filestripper()
     //TFile *foutput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth_NEW.root", "recreate");
     //TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
     TString foutput_dir = "/mnt/ramdisk/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_1.root";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_3.root";
     TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
@@ -730,12 +730,15 @@ void filestripper()
     //
     //Int_t Run_min = Run_first; // ... NEW_0
     //Int_t Run_max = 2500;
-    Int_t Run_min = 2500;
-    Int_t Run_max = 3000; // ...NEW_1
-    //Int_t Run_min = 3000;
-    //Int_t Run_max = 4000; // ...NEW_2
-    //Int_t Run_min = 4000;
-    //Int_t Run_max = 4500; // ...NEW_3
+    
+    //Int_t Run_min = 2500; // ... NEW_1
+    //Int_t Run_max = 3000;
+
+    //Int_t Run_min = 3000; // ... NEW_2
+    //Int_t Run_max = 4000;
+
+    //Int_t Run_min = 4000; // ... NEW_3
+    //Int_t Run_max = 4500;
 
     // TODO: change output file name
 
