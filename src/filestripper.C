@@ -290,12 +290,6 @@ void filestripper()
 
     //TFile *foutput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth_NEW.root", "recreate");
     //TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
-    TString foutput_dir = "/mnt/ramdisk/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_4.root";
-    TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
-    TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
-    foutput->cd("Nd150_2eNg");
-    TTree *toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
 
     Int_t Event = 0; 
     Int_t Run = 0; 
@@ -403,59 +397,6 @@ void filestripper()
     tinput->SetBranchAddress("clusterHitSec", clusterHitSec);
     tinput->SetBranchAddress("clusterHitZ", clusterHitZ);
 
-    toutput->Branch("Event", &Event, "Event/I");
-    toutput->Branch("Run", &Run, "Run/I");
-    toutput->Branch("runStatus", &runStatus, "runStatus/I");
-    toutput->Branch("nElectrons", &nElectrons, "nElectrons/I");
-    toutput->Branch("radonWeight", &radonWeight, "radonWeight/D");
-    toutput->Branch("bi210Weight", &bi210Weight, "bi210Weight/D");
-    toutput->Branch("foilSide", &foilSide, "foilSide/I");
-    toutput->Branch("eventTime", &eventTime, "eventTime/D");
-    toutput->Branch("trueVertexR", &trueVertexR, "trueVertexR/D");
-    toutput->Branch("trueVertexZ", &trueVertexZ, "trueVertexZ/D");
-    toutput->Branch("trueVertexSector", &trueVertexSector, "trueVertexSector/D");
-    toutput->Branch("trueVertexLayer", &trueVertexLayer, "trueVertexLayer/I");
-    toutput->Branch("electronEnergy", &electronEnergy, "electronEnergy[2]/D");
-    toutput->Branch("eTrackLength", &eTrackLength, "eTrackLength[2]/D");
-    toutput->Branch("electronSide", &electronSide, "electronSide[2]/I");
-    toutput->Branch("trackSign", &trackSign, "trackSign[2]/D");
-    toutput->Branch("electronMeasTime", &electronMeasTime, "electronMeasTime[2]/D");
-    toutput->Branch("electronDMeasTime", &electronDMeasTime, "electronDMeasTime[2]/D");
-    toutput->Branch("electronBlockType", &electronBlockType, "electronBlockType[2]/I");
-    toutput->Branch("internalPull", &internalPull, "internalPull/D");
-    toutput->Branch("internalProb", &internalProb, "internalProb/D");
-    toutput->Branch("externalPull", &externalPull, "externalPull/D");
-    toutput->Branch("externalProb", &externalProb, "externalProb/D");
-    toutput->Branch("cosee", &cosee, "cosee/D");
-    toutput->Branch("cosee_weight", &cosee_weight, "cosee_weight/D");
-    toutput->Branch("electronPMT", &electronPMT, "electronPMT[2]/I");
-    toutput->Branch("electronLDFlag", &electronLDFlag, "electronLDFlag[2]/I");
-    toutput->Branch("electronLDCorr", &electronLDCorr, "electronLDCorr[2]/D");
-    toutput->Branch("electronLDCorrErr", &electronLDCorrErr, "electronLDCorrErr[2]/D");
-    toutput->Branch("vertexZ", &vertexZ, "vertexZ[2]/D");
-    toutput->Branch("vertexSec", &vertexSec, "vertexSec[2]/D");
-    toutput->Branch("vertexR", &vertexR, "vertexR[2]/D");
-    toutput->Branch("vertexInHotSpot", &vertexInHotSpot, "vertexInHotSpot[2]/O");
-    toutput->Branch("firstGgHitLayer", &firstGgHitLayer, "firstGgHitLayer[2]/I");
-    toutput->Branch("lastGgHitLayer", &lastGgHitLayer, "lastGgHitLayer[2]/I");
-    toutput->Branch("NAPromptGgHits", &NAPromptGgHits, "NAPromptGgHits/I");
-    toutput->Branch("NAPromptGgHitsSide", &NAPromptGgHitsSide, "NAPromptGgHitsSide/I");
-    toutput->Branch("NAPromptGgHitsDist2Vertex", &NAPromptGgHitsDist2Vertex, "NAPromptGgHitsDist2Vertex[NAPromptGgHits]/D");
-    toutput->Branch("NAPromptGgHitsDist2Calo", &NAPromptGgHitsDist2Calo, "NAPromptGgHitsDist2Calo[NAPromptGgHits]/D");
-    toutput->Branch("nGammaClusters", &nGammaClusters, "nGammaClusters/I");
-    toutput->Branch("nInCluster", &nInCluster, "nInCluster[nGammaClusters]/I");
-    toutput->Branch("clusterEnergy", &clusterEnergy, "clusterEnergy[nGammaClusters]/D");
-    toutput->Branch("clusterTimeSpan", &clusterTimeSpan, "clusterTimeSpan[nGammaClusters]/D");
-    toutput->Branch("nTotalClusterHits", &nTotalClusterHits, "nTotalClusterHits/I");
-    toutput->Branch("clusterHitEnergy", &clusterHitEnergy, "clusterHitEnergy[nTotalClusterHits]/D");
-    toutput->Branch("clusterHitPMT", &clusterHitPMT, "clusterHitPMT[nTotalClusterHits]/I");
-    toutput->Branch("clusterHitLDFlag", &clusterHitLDFlag, "clusterHitLDFlags[nTotalClusterHits]/I");
-    toutput->Branch("clusterHitLDCorr", &clusterHitLDCorr, "clusterHitLDCorr[nTotalClusterHits]/D");
-    toutput->Branch("clusterHitLDCorrErr", &clusterHitLDCorrErr, "clusterHitLDCorrErr[nTotalClusterHits]/D");
-    toutput->Branch("clusterHitSec", &clusterHitSec, "clusterHitSec[nTotalClusterHits]/D");
-    toutput->Branch("clusterHitZ", &clusterHitZ, "clusterHitZ[nTotalClusterHits]/D");
-
-    toutput->Branch("trueElectronEnergy", &trueElectronEnergy, "trueElectronEnergy[2]/D");
 
 
 
@@ -740,8 +681,11 @@ void filestripper()
     //Int_t Run_min = 4000; // ... NEW_3
     //Int_t Run_max = 4500;
 
-    Int_t Run_min = 4500; // ... NEW_4
-    Int_t Run_max = 5000;
+    //Int_t Run_min = 4500; // ... NEW_4
+    //Int_t Run_max = 5000;
+
+    Int_t Run_min = 5000; // ... NEW_5
+    Int_t Run_max = 6000;
 
     // TODO: change output file name
 
@@ -750,6 +694,78 @@ void filestripper()
     std::cout << "Output file directory: " << foutput_dir << std::endl;
     std::cout << "Output file name: " << foutput_fname << std::endl;
     std::cin.get();
+
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // initialize output file
+    ///////////////////////////////////////////////////////////////////////////
+
+    TString foutput_dir = "/mnt/ramdisk/";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_5.root";
+    TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
+    TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
+    foutput->cd("Nd150_2eNg");
+    TTree *toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
+
+    toutput->Branch("Event", &Event, "Event/I");
+    toutput->Branch("Run", &Run, "Run/I");
+    toutput->Branch("runStatus", &runStatus, "runStatus/I");
+    toutput->Branch("nElectrons", &nElectrons, "nElectrons/I");
+    toutput->Branch("radonWeight", &radonWeight, "radonWeight/D");
+    toutput->Branch("bi210Weight", &bi210Weight, "bi210Weight/D");
+    toutput->Branch("foilSide", &foilSide, "foilSide/I");
+    toutput->Branch("eventTime", &eventTime, "eventTime/D");
+    toutput->Branch("trueVertexR", &trueVertexR, "trueVertexR/D");
+    toutput->Branch("trueVertexZ", &trueVertexZ, "trueVertexZ/D");
+    toutput->Branch("trueVertexSector", &trueVertexSector, "trueVertexSector/D");
+    toutput->Branch("trueVertexLayer", &trueVertexLayer, "trueVertexLayer/I");
+    toutput->Branch("electronEnergy", &electronEnergy, "electronEnergy[2]/D");
+    toutput->Branch("eTrackLength", &eTrackLength, "eTrackLength[2]/D");
+    toutput->Branch("electronSide", &electronSide, "electronSide[2]/I");
+    toutput->Branch("trackSign", &trackSign, "trackSign[2]/D");
+    toutput->Branch("electronMeasTime", &electronMeasTime, "electronMeasTime[2]/D");
+    toutput->Branch("electronDMeasTime", &electronDMeasTime, "electronDMeasTime[2]/D");
+    toutput->Branch("electronBlockType", &electronBlockType, "electronBlockType[2]/I");
+    toutput->Branch("internalPull", &internalPull, "internalPull/D");
+    toutput->Branch("internalProb", &internalProb, "internalProb/D");
+    toutput->Branch("externalPull", &externalPull, "externalPull/D");
+    toutput->Branch("externalProb", &externalProb, "externalProb/D");
+    toutput->Branch("cosee", &cosee, "cosee/D");
+    toutput->Branch("cosee_weight", &cosee_weight, "cosee_weight/D");
+    toutput->Branch("electronPMT", &electronPMT, "electronPMT[2]/I");
+    toutput->Branch("electronLDFlag", &electronLDFlag, "electronLDFlag[2]/I");
+    toutput->Branch("electronLDCorr", &electronLDCorr, "electronLDCorr[2]/D");
+    toutput->Branch("electronLDCorrErr", &electronLDCorrErr, "electronLDCorrErr[2]/D");
+    toutput->Branch("vertexZ", &vertexZ, "vertexZ[2]/D");
+    toutput->Branch("vertexSec", &vertexSec, "vertexSec[2]/D");
+    toutput->Branch("vertexR", &vertexR, "vertexR[2]/D");
+    toutput->Branch("vertexInHotSpot", &vertexInHotSpot, "vertexInHotSpot[2]/O");
+    toutput->Branch("firstGgHitLayer", &firstGgHitLayer, "firstGgHitLayer[2]/I");
+    toutput->Branch("lastGgHitLayer", &lastGgHitLayer, "lastGgHitLayer[2]/I");
+    toutput->Branch("NAPromptGgHits", &NAPromptGgHits, "NAPromptGgHits/I");
+    toutput->Branch("NAPromptGgHitsSide", &NAPromptGgHitsSide, "NAPromptGgHitsSide/I");
+    toutput->Branch("NAPromptGgHitsDist2Vertex", &NAPromptGgHitsDist2Vertex, "NAPromptGgHitsDist2Vertex[NAPromptGgHits]/D");
+    toutput->Branch("NAPromptGgHitsDist2Calo", &NAPromptGgHitsDist2Calo, "NAPromptGgHitsDist2Calo[NAPromptGgHits]/D");
+    toutput->Branch("nGammaClusters", &nGammaClusters, "nGammaClusters/I");
+    toutput->Branch("nInCluster", &nInCluster, "nInCluster[nGammaClusters]/I");
+    toutput->Branch("clusterEnergy", &clusterEnergy, "clusterEnergy[nGammaClusters]/D");
+    toutput->Branch("clusterTimeSpan", &clusterTimeSpan, "clusterTimeSpan[nGammaClusters]/D");
+    toutput->Branch("nTotalClusterHits", &nTotalClusterHits, "nTotalClusterHits/I");
+    toutput->Branch("clusterHitEnergy", &clusterHitEnergy, "clusterHitEnergy[nTotalClusterHits]/D");
+    toutput->Branch("clusterHitPMT", &clusterHitPMT, "clusterHitPMT[nTotalClusterHits]/I");
+    toutput->Branch("clusterHitLDFlag", &clusterHitLDFlag, "clusterHitLDFlags[nTotalClusterHits]/I");
+    toutput->Branch("clusterHitLDCorr", &clusterHitLDCorr, "clusterHitLDCorr[nTotalClusterHits]/D");
+    toutput->Branch("clusterHitLDCorrErr", &clusterHitLDCorrErr, "clusterHitLDCorrErr[nTotalClusterHits]/D");
+    toutput->Branch("clusterHitSec", &clusterHitSec, "clusterHitSec[nTotalClusterHits]/D");
+    toutput->Branch("clusterHitZ", &clusterHitZ, "clusterHitZ[nTotalClusterHits]/D");
+
+    toutput->Branch("trueElectronEnergy", &trueElectronEnergy, "trueElectronEnergy[2]/D");
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // start main loop
+    ///////////////////////////////////////////////////////////////////////////
 
     std::chrono::system_clock::time_point start_time = std::chrono::high_resolution_clock::now();
 
