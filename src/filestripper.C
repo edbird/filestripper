@@ -291,7 +291,7 @@ void filestripper()
     //TFile *foutput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output_truth_NEW.root", "recreate");
     //TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
     TString foutput_dir = "/mnt/ramdisk/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_3.root";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_4.root";
     TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
@@ -737,8 +737,11 @@ void filestripper()
     //Int_t Run_min = 3000; // ... NEW_2
     //Int_t Run_max = 4000;
 
-    Int_t Run_min = 4000; // ... NEW_3
-    Int_t Run_max = 4500;
+    //Int_t Run_min = 4000; // ... NEW_3
+    //Int_t Run_max = 4500;
+
+    Int_t Run_min = 4500; // ... NEW_4
+    Int_t Run_max = 5000;
 
     // TODO: change output file name
 
@@ -748,7 +751,7 @@ void filestripper()
     std::cout << "Output file name: " << foutput_fname << std::endl;
     std::cin.get();
 
-    auto start_time = std::chrono::high_resolution_clock::now();
+    std::chrono::system_clock::time_point start_time = std::chrono::high_resolution_clock::now();
 
     Long64_t ix_chain_faster = 0;
     for(Long64_t ix{0}; ix < max; ++ ix)
@@ -769,21 +772,23 @@ void filestripper()
             std::cout << "ix=" << ix << " / " << max << std::endl;
             std::cout << "looking for Run=" << Run << std::endl;
 
-            auto current_time = std::chrono::high_resolution_clock::now();
-            auto runtime_seconds = std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time);
-            auto runtime_hours = std::chrono::duration_cast<std::chrono::hours>(current_time - start_time);
-            std::cout << "Runtime: " << runtime_seconds.count() << " s, " << runtime_hours.count() << " h" << std::endl;
+            std::chrono::system_clock::time_point current_time = std::chrono::high_resolution_clock::now();
+            //auto runtime_seconds = std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time);
+            //auto runtime_hours = std::chrono::duration_cast<std::chrono::hours>(current_time - start_time);
+            //std::cout << "Runtime: " << runtime_seconds.count() << " s, " << runtime_hours.count() << " h" << std::endl;
+            std::chrono::duration<double> runtime_seconds = current_time - start_time;
+            std::cout << "Runtime: " << runtime_seconds.count() << " s, " << runtime_seconds.count() / 3600.0 << " h" << std::endl;
             Int_t total_runs = Run_max - Run_min;
-            Int_t current_runs = Run - Run_min;
-            Int_t todo_runs = total_runs - current_runs;
-            double fraction_complete = (double)current_runs / (double)total_runs;
+            Int_t completed_runs = Run - Run_min;
+            //Int_t todo_runs = total_runs - current_runs;
+            double fraction_complete = (double)completed_runs / (double)total_runs;
             std::cout << "Percentage complete: " << 100.0 * fraction_complete << " %" << std::endl;
             try
             {
-                double estimated_total_time = runtime_seconds.count() / fraction_complete;
-                double estimated_time_remaining = estimated_total_time - runtime_seconds.count();
-                double estimated_time_remaining_hours = runtime_hours.count() / fraction_complete - runtime_hours.count();
-                std::cout << "Estimated time to completion: " << estimated_time_remaining << " s, " << estimated_time_remaining_hours << " h" << std::endl;
+                double estimated_total_time_seconds = runtime_seconds.count() / fraction_complete;
+                double estimated_time_remaining_seconds = estimated_total_time_seconds - runtime_seconds.count();
+                double estimated_time_remaining_hours = estimated_time_remaining_seconds / 3600.0;
+                std::cout << "Estimated time to completion: " << estimated_time_remaining_seconds << " s, " << estimated_time_remaining_hours << " h" << std::endl;
             }
             catch(...)
             {
