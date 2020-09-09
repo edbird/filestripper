@@ -689,6 +689,9 @@ void filestripper()
 
     // TODO: change output file name
 
+    TString foutput_dir = "/mnt/ramdisk/";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_5.root";
+
     std::cout << "last chance to check important parameters" << std::endl;
     std::cout << "Run_min=" << Run_min << " Run_max=" << Run_max << std::endl;
     std::cout << "Output file directory: " << foutput_dir << std::endl;
@@ -701,8 +704,6 @@ void filestripper()
     // initialize output file
     ///////////////////////////////////////////////////////////////////////////
 
-    TString foutput_dir = "/mnt/ramdisk/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_5.root";
     TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
