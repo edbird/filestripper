@@ -234,7 +234,7 @@ void filesplitter()
 
     // loop over input
     Long64_t count = 0;
-    for(Long64_t ix_input{0}; ix_input < max; ++ ix_input);
+    for(Long64_t ix_input{0}; ix_input < max; ++ ix_input)
     {
         tinput->GetEntry(ix_input);
 
