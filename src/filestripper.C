@@ -635,6 +635,8 @@ void filestripper()
         }
     }
 
+    std::cout << "checks done" << std::endl;
+
 
     Long64_t count{0};
     Long64_t max{tinput->GetEntries()};
