@@ -603,6 +603,38 @@ void filestripper()
         }
     }
 
+    // check tinput run numbers in order TODO
+    if(0)
+    {
+        Long64_t max{tinput->GetEntries()};
+        tinput->GetEntry(0);
+        Long64_t run_last = run;
+        for(Long64_t ix{1}; ix < max; ++ ix)
+        {
+            tinput->GetEntry(ix);
+
+            if(run == run_last)
+            {
+                // do nothing, ok
+            }
+            else if(run == run_last - 1)
+            {
+                // do nothing, ok
+            }
+            else if(run < run_last - 1)
+            {
+                std::cout << "run: " << run_last << " -> " << run << std::endl;
+            }
+            else
+            {
+                std::cout << "ERROR: run=" << run << " run_last=" << run_last << std::endl;
+                std::cin.get();
+            }
+
+            run_last = run;
+        }
+    }
+
 
     Long64_t count{0};
     Long64_t max{tinput->GetEntries()};
