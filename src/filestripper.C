@@ -622,7 +622,7 @@ void filestripper()
                 // do nothing, ok
                 //std::cout << "Run=" << Run << std::endl;
             }
-            else if(Run < Run_last + 1)
+            else if(Run > Run_last + 1)
             {
                 std::cout << "Run: " << Run_last << " -> " << Run << std::endl;
             }
