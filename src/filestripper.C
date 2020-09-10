@@ -608,31 +608,31 @@ void filestripper()
     {
         Long64_t max{tinput->GetEntries()};
         tinput->GetEntry(0);
-        Long64_t run_last = run;
+        Long64_t Run_last = Run;
         for(Long64_t ix{1}; ix < max; ++ ix)
         {
             tinput->GetEntry(ix);
 
-            if(run == run_last)
+            if(Run == Run_last)
             {
                 // do nothing, ok
             }
-            else if(run == run_last - 1)
+            else if(Run == Run_last - 1)
             {
                 // do nothing, ok
-                std::cout << "run=" << run << std::endl;
+                std::cout << "Run=" << Run << std::endl;
             }
-            else if(run < run_last - 1)
+            else if(Run < Run_last - 1)
             {
-                std::cout << "run: " << run_last << " -> " << run << std::endl;
+                std::cout << "Run: " << Run_last << " -> " << Run << std::endl;
             }
             else
             {
-                std::cout << "ERROR: run=" << run << " run_last=" << run_last << std::endl;
+                std::cout << "ERROR: Run=" << Run << " Run_last=" << Run_last << std::endl;
                 std::cin.get();
             }
 
-            run_last = run;
+            Run_last = Run;
         }
     }
 
