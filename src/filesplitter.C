@@ -333,6 +333,9 @@ void filesplitter()
     }
 
     // close existing file
+    std::cout << "ix_input=" << ix_input << " current file contains " << count << " events" << std::endl;
+    count = 0;
+    std::cout << "output_file_index=" << output_file_index << std::endl;
 
     if(foutput != nullptr)
     {
