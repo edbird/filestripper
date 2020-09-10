@@ -624,12 +624,12 @@ void filestripper()
             }
             else if(Run > Run_last + 1)
             {
-                std::cout << "Run: " << Run_last << " -> " << Run << std::endl;
+                //std::cout << "Run: " << Run_last << " -> " << Run << std::endl;
             }
             else
             {
-                std::cout << "ERROR: Run=" << Run << " Run_last=" << Run_last << std::endl;
-                std::cin.get();
+                std::cout << "ERROR: ix=" << ix << " Run=" << Run << " Run_last=" << Run_last << std::endl;
+                //std::cin.get();
             }
 
             Run_last = Run;
