@@ -684,13 +684,16 @@ void filestripper()
     //Int_t Run_min = 4500; // ... NEW_4
     //Int_t Run_max = 5000;
 
-    Int_t Run_min = 5000; // ... NEW_5
-    Int_t Run_max = 6000;
+    //Int_t Run_min = 5000; // ... NEW_5
+    //Int_t Run_max = 6000;
+
+    Int_t Run_min = 6000; // ... NEW_6
+    Int_t Run_max = 7000;
 
     // TODO: change output file name
 
     TString foutput_dir = "/mnt/ramdisk/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_5.root";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_6.root";
 
     std::cout << "last chance to check important parameters" << std::endl;
     std::cout << "Run_min=" << Run_min << " Run_max=" << Run_max << std::endl;
