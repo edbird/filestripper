@@ -693,8 +693,8 @@ void filestripper()
     //Int_t Run_min = 7000; // ... NEW_7
     //Int_t Run_max = 8000;
 
-    Int_t Run_min = 7000; // ... NEW_8
-    Int_t Run_max = 8000;
+    Int_t Run_min = 8000; // ... NEW_8
+    Int_t Run_max = 9000;
 
     // TODO: change output file name
 
