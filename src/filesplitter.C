@@ -268,7 +268,7 @@ void filesplitter()
             TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
             foutput->cd("Nd150_2eNg");
 
-            TTree *toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
+            toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
 
             toutput->Branch("Event", &Event, "Event/I");
             toutput->Branch("Run", &Run, "Run/I");
