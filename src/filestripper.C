@@ -604,7 +604,7 @@ void filestripper()
     }
 
     // check tinput run numbers in order TODO
-    if(0)
+    if(1)
     {
         Long64_t max{tinput->GetEntries()};
         tinput->GetEntry(0);
@@ -620,7 +620,7 @@ void filestripper()
             else if(run == run_last - 1)
             {
                 // do nothing, ok
-                std::cout << "run=" << run << std::endl;
+                //std::cout << "run=" << run << std::endl;
             }
             else if(run < run_last - 1)
             {
