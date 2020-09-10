@@ -620,6 +620,7 @@ void filestripper()
             else if(run == run_last - 1)
             {
                 // do nothing, ok
+                std::cout << "run=" << run << std::endl;
             }
             else if(run < run_last - 1)
             {
