@@ -234,6 +234,7 @@ void filesplitter()
 
     // loop over input
     Long64_t count = 0;
+    std::cout << "Processing " << max << " entries" << std::endl;
     for(Long64_t ix_input{0}; ix_input < max; ++ ix_input)
     {
         tinput->GetEntry(ix_input);
@@ -243,6 +244,7 @@ void filesplitter()
             std::cout << "ix_input=" << ix_input << " current file contains " << count << " events" << std::endl;
             count = 0;
             std::cout << "Next file: " << names[output_file_index] << std::endl;
+            std::cout << "output_file_index=" << output_file_index << std::endl;
 
             // close existing file
             if(foutput != nullptr)
