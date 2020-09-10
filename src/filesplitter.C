@@ -20,7 +20,7 @@ void filesplitter()
     // /home/blotsd/NEMO3/Nd150_analysis/DataLists/nd150_61_rot_nd150.lst
 
 
-    const int NUM_NAMES = 20
+    const int NUM_NAMES = 20;
     std::string names[NUM_NAMES];
     names[0] = "Nd150_2eNg_output_split_nd150_101_01.root";
     names[1] = "Nd150_2eNg_output_split_nd150_101_02.root";
@@ -154,7 +154,6 @@ void filesplitter()
     tinput->SetBranchAddress("clusterHitSec", clusterHitSec);
     tinput->SetBranchAddress("clusterHitZ", clusterHitZ);
 
-    Long64_t count{0};
     Long64_t max{tinput->GetEntries()};
     tinput->GetEntry(0);
     Int_t Run_last = Run;
@@ -177,7 +176,7 @@ void filesplitter()
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
 
-    TTree *toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
+    toutput = new TTree("Nd150_2eNg", "Nd150_2eNg");
 
     toutput->Branch("Event", &Event, "Event/I");
     toutput->Branch("Run", &Run, "Run/I");
