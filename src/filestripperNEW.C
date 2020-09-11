@@ -480,7 +480,7 @@ void filestripperNEW()
         // start data processing loop
         ///////////////////////////////////////////////////////////////////////////
 
-        //Long64_t ix_faster = 0;
+        Long64_t ix_faster = 0;
         for(Long64_t ix_B{0}; ix_B < max_B; ++ ix_B)
         {
             tinput_B->GetEntry(ix_B);
@@ -495,8 +495,8 @@ void filestripperNEW()
             Long64_t max_A{tinput_A->GetEntries()};
             Long64_t ix_A_start, ix_A_end, ix_A_match;
             //std::cout << "ix_faster=" << ix_faster << std::endl;
-            //for(Long64_t ix_A{ix_faster}; ix_A < max_A; ++ ix_A)
-            for(Long64_t ix_A{0}; ix_A < max_A; ++ ix_A)
+            for(Long64_t ix_A{ix_faster}; ix_A < max_A; ++ ix_A)
+            //for(Long64_t ix_A{0}; ix_A < max_A; ++ ix_A)
             {
                 tinput_A->GetEntry(ix_A);
                 //std::cout << "ix_A=" << ix_A << " run=" << run << std::endl;
@@ -506,6 +506,7 @@ void filestripperNEW()
                 if(-run == Run)
                 {
                     ix_A_start = ix_A;
+                    ix_faster = ix_A;
                     //std::cout << "ix_A_start=" << ix_A_start << std::endl;
                     break;
                 }
