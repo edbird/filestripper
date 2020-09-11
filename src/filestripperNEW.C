@@ -151,7 +151,7 @@ void filestripperNEW()
     // /home/blotsd/NEMO3/Nd150_analysis/DataLists/nd150_61_rot_nd150.lst
 
 
-    const int NUM_NAMES = 1;// 20;
+    const int NUM_NAMES = 20;
     
     // input set A
     // the files which Summer used to create Nd150_2eNg_output.root
@@ -360,7 +360,8 @@ void filestripperNEW()
     ///////////////////////////////////////////////////////////////////////////
 
     std::cout << "start main loop" << std::endl;
-    for(int file_index = 0; file_index < NUM_NAMES; ++ file_index)
+    //for(int file_index = 0; file_index < NUM_NAMES; ++ file_index)
+    for(int file_index = 0; file_index < 1; ++ file_index)
     {
         std::cout << "********************************************************************************" << std::endl;
         std::cout << "********************************************************************************" << std::endl;
