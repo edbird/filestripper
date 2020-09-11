@@ -125,11 +125,19 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
     std::cout << "original files:  trueEnergy(" << 1.0e+03 * electron_energy_0 << ", " << 1.0e+03 * electron_energy_1 << ") [MeV] " << std::endl;
     std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc_0_8 << ", " << 1.0e+03 * Sc_1_8 << ") [MeV] " << std::endl;
     std::cout << "processed files: recoEnergy(" << electronEnergy[0] << ", " << electronEnergy[1] << ") [MeV] " << std::endl;
+    std::cout << std::endl;
     //std::cout << "Electron Energy: " << electronEnergy[0] << ", " << 1.0e3 * electron_energy_0 << std::endl;
     //std::cout << "Electron Energy: " << electronEnergy[1] << ", " << 1.0e3 * electron_energy_1 << std::endl;
     //std::cout << "Ecc: " << Ecc[0] << ", " << Ecc[1] << std::endl;
     //std::cout << "Sc: " << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << std::endl;
 #endif
+
+    if((std::abs(1.0e+03 * Sc_0_8 - electronEnergy[0]) > 1.0e-3) ||
+       (std::abs(1.0e+03 * Sc_1_8 - electronEnergy[1]) > 1.0e-3))
+    {
+        std::cout << "suspicious event: energy 0: " << 1.0e+03 * Sc_0_8 << ", " << electronEnergy[0] << std::endl;
+        std::cout << "suspicious event: energy 1: " << 1.0e+03 * Sc_1_8 << ", " << electronEnergy[1] << std::endl;
+    }
 
     // TODO: can simply set branch addresses to input variables?
     // not sure if multiplication is required
