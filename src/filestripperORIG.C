@@ -743,7 +743,7 @@ void filestripperORIG()
     //std::cout << "Run_min=" << Run_min << " Run_max=" << Run_max << std::endl;
     std::cout << "Output file directory: " << foutput_dir << std::endl;
     std::cout << "Output file name: " << foutput_fname << std::endl;
-    std::cin.get();
+    //std::cin.get();
 
 
 
@@ -898,7 +898,7 @@ void filestripperORIG()
                 break;
             }
         }
-        std::cout << "setting ix_chain_start=" << ix_chain_start << std::endl;
+        //std::cout << "setting ix_chain_start=" << ix_chain_start << std::endl;
         for(Long64_t ix_chain{ix_chain_start + 1}; ix_chain < max_chain; ++ ix_chain)
         {
             tchain->GetEntry(ix_chain);
@@ -918,7 +918,7 @@ void filestripperORIG()
                 break;
             }
         }
-        std::cout << "setting ix_chain_end=" << ix_chain_end << std::endl;
+        //std::cout << "setting ix_chain_end=" << ix_chain_end << std::endl;
 
         //std::cout << "ix=" << ix << ", ix_chain_start=" << ix_chain_start << " ix_chain_end=" << ix_chain_end << std::endl;
         //std::cin.get();
