@@ -120,7 +120,7 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
         ++ swap_count_false;
     }
 
-#define DEBUG 0
+#define DEBUG 1
 #if DEBUG
     std::cout << "original files:  trueEnergy(" << 1.0e+03 * electron_energy_0 << ", " << 1.0e+03 * electron_energy_1 << ") [MeV] " << std::endl;
     std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << ") [MeV] " << std::endl;
@@ -572,7 +572,7 @@ void filestripperORIG()
 
     // check tchain run numbers in order
     // 2020-09-07: check passed on foils_nd150_61_rot_nd150_1xx_xx.root
-    if(1)
+    if(0)
     {
         Long64_t max_chain{tchain->GetEntries()};
         tchain->GetEntry(0);
@@ -604,7 +604,7 @@ void filestripperORIG()
     }
 
     // check tinput run numbers in order TODO
-    if(1)
+    if(0)
     {
         Long64_t max{tinput->GetEntries()};
         tinput->GetEntry(0);
@@ -737,7 +737,7 @@ void filestripperORIG()
     // TODO: change output file name
 
     TString foutput_dir = "/mnt/ramdisk/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_all.root";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_all_deleteme.root";
 
     std::cout << "last chance to check important parameters" << std::endl;
     //std::cout << "Run_min=" << Run_min << " Run_max=" << Run_max << std::endl;
