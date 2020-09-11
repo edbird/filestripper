@@ -557,7 +557,7 @@ void filestripperNEW()
                     Long64_t ix,
                     Long64_t ix_A)
                 */
-                SearchFunction(return_flag, Run, trueVertexR, trueVertexSector, trueVertexZ, run, Xvntu, Yvntu, Zvntu, ix, ix_A);
+                SearchFunction(return_flag, Run, trueVertexR, trueVertexSector, trueVertexZ, run, Xvntu, Yvntu, Zvntu, ix_B, ix_A);
                 if(return_flag == 1)
                 {
                     if(multi_match_count == 0)
@@ -595,12 +595,12 @@ void filestripperNEW()
             }
             else if(multi_match_count == 0)
             {
-                std::cout << "Error: multi_match_count=0 ! : xi=" << ix << " Run=" << Run <<  std::endl;
+                std::cout << "Error: multi_match_count=0 ! : xi_B=" << ix_B << " Run=" << Run <<  std::endl;
                 std::cin.get();
             }
             else
             {
-                std::cout << "Error: multi_match_count=" << multi_match_count << " ! : ix=" << ix << " Run=" << Run << std::endl;
+                std::cout << "Error: multi_match_count=" << multi_match_count << " ! : ix_B=" << ix_B << " Run=" << Run << std::endl;
                 std::cin.get();
             }
         }
