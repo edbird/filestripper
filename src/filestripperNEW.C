@@ -89,7 +89,7 @@ void SearchFunction(
             close_match_R = true;
             ++ close_match_count;
         }
-        if(std::abs(trueVertexSector - sectorntu) < 1.0e-6)
+        if(std::abs(trueVertexSector - sectorntu) < 5.0e-6) // was 1.0e-6
         //if(trueVertexSector == sectorntu)
         {
             close_match_sector = true;
