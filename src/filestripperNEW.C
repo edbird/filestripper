@@ -83,7 +83,7 @@ void SearchFunction(
         bool close_match_sector = false;
         bool close_match_Z = false;
         int close_match_count = 0;
-        if(std::abs(trueVertexR - rntu) < 5.0e-5)
+        if(std::abs(trueVertexR - rntu) < 10.0e-5) // was 5.0e-5
         //if(trueVertexR == rntu)
         {
             close_match_R = true;
@@ -560,10 +560,12 @@ void filestripperNEW()
 
             tinput_B->GetEntry(ix_B);
 
+            /*
             if(Run == 9060)
             {
                 std::cout << "reached Run 9060" << std::endl;
             }
+            */
 
             //std::cout << "looking for Run=" << Run << std::endl;
 
@@ -608,10 +610,12 @@ void filestripperNEW()
                     break;
                 }
             }
+            /*
             if(Run == 9060)
             {
                 std::cout << "setting the start search point to " << ix_A_start << std::endl;
             }
+            */
             for(Long64_t ix_A{ix_A_start + 1}; ix_A < max_A; ++ ix_A)
             {
                 tinput_A->GetEntry(ix_A);
@@ -632,10 +636,12 @@ void filestripperNEW()
                     break;
                 }
             }
+            /*
             if(Run == 9060)
             {
                 std::cout << "setting the end search point to " << ix_A_end << std::endl;
             }
+            */
 
             //std::cout << "ix=" << ix << ", ix_A_start=" << ix_A_start << " ix_A_end=" << ix_A_end << std::endl;
             //std::cin.get();
