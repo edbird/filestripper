@@ -153,6 +153,18 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
         std::cout << "suspicious event: energy 1: " << 1.0e+03 * Sc_1_8 << ", " << electronEnergy[1] << std::endl;
     }
 
+    if(
+        (
+            (trueElectronEnergy_0 < trueElectronEnergy_1) &&
+            (electronEnergy[1] < electronEnergy[0])
+        ) || (
+            (trueElectronEnergy_1 < trueElectronEnergy_0) &&
+            (electronEnergy[0] < electronEnergy[1])
+        )
+    {
+        std::cout << "swap detected" << std::endl;
+    }
+
     std::cout << std::endl;
     // TODO: can simply set branch addresses to input variables?
     // not sure if multiplication is required
