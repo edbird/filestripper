@@ -24,6 +24,7 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
     //Double_t electron_energy_1 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
     //electron_energy_1 = 1.0e3 * std::sqrt(electron_energy_1);
 //    if(electron_energy_0 < electron_energy_1) std::swap(electron_energy_0, electron_energy_1);
+#if 0
     if(electron_energy_0 < electron_energy_1)
     {
         //std::cout << "swap TRUE" << std::endl;
@@ -34,6 +35,7 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
         //std::cout << "swap FALSE" << std::endl;
         ++ swap_count_false;
     }
+#endif
 
 #define DEBUG 0
 #if DEBUG
@@ -149,7 +151,7 @@ void filestripper()
     // /home/blotsd/NEMO3/Nd150_analysis/DataLists/nd150_61_rot_nd150.lst
 
 
-    const int NUM_NAMES = 20
+    const int NUM_NAMES = 20;
     
     // input set A
     // the files which Summer used to create Nd150_2eNg_output.root
@@ -469,8 +471,6 @@ void filestripper()
         tinput_B->SetBranchAddress("clusterHitSec", clusterHitSec);
         tinput_B->SetBranchAddress("clusterHitZ", clusterHitZ);
 
-        toutput->cd();
-
 
         // count number of events saved to output file
         Long64_t count{0};
@@ -493,7 +493,7 @@ void filestripper()
             // new 2020-01-14
             //Run_current = Run;
             Long64_t max_A{tinput_A->GetEntries()};
-            Long64_t ix_start, ix_end, ix_match;
+            Long64_t ix_A_start, ix_A_end, ix_A_match;
             //std::cout << "ix_faster=" << ix_faster << std::endl;
             //for(Long64_t ix_A{ix_faster}; ix_A < max_A; ++ ix_A)
             for(Long64_t ix_A{0}; ix_A < max_A; ++ ix_A)
@@ -615,7 +615,7 @@ void filestripper()
         std::cout << std::endl;
     }
     
-    toutput->cd();
+    foutput->cd();
     toutput->Write();
     foutput->Close();
 
