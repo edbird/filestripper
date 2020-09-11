@@ -288,7 +288,7 @@ void filestripperNEW()
     ///////////////////////////////////////////////////////////////////////////
 
     TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/output_split/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEWNEW_.root";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEWNEW.root";
     TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
     foutput->cd("Nd150_2eNg");
@@ -733,7 +733,7 @@ void filestripperNEW()
         std::cout << std::endl;
     }
     
-    foutput->cd();
+    foutput->cd("Nd150_2eNg");
     toutput->Write();
     foutput->Close();
 
