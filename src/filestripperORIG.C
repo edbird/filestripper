@@ -157,10 +157,12 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
         (
             (trueElectronEnergy_0 < trueElectronEnergy_1) &&
             (electronEnergy[1] < electronEnergy[0])
-        ) || (
+        ) ||
+        (
             (trueElectronEnergy_1 < trueElectronEnergy_0) &&
             (electronEnergy[0] < electronEnergy[1])
         )
+    )
     {
         std::cout << "swap detected" << std::endl;
     }
