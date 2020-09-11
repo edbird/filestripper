@@ -564,7 +564,7 @@ void filestripperNEW()
                     if(multi_match_count == 0)
                     {
                         ix_A_match = ix_A;
-                        std::cout << "Match found: ix_B=" << ix_B << " ix_A=" << ix_A << std::endl;
+                        //std::cout << "Match found: ix_B=" << ix_B << " ix_A=" << ix_A << std::endl;
                     }
                     else
                     {
