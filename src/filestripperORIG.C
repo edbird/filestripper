@@ -97,9 +97,12 @@ std::size_t swap_count_false = 0;
 void GetTrueEnergy(
     Double_t* trueElectronEnergy,
     Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu,
-    Float_t Sc_0_8, Float_t Sc_1_8,
     Double_t* electronEnergy,
+    Float_t Sc_0_1, Float_t Sc_1_1,
+    Float_t Sc_0_2, Float_t Sc_1_2,
+    Float_t Sc_0_3, Float_t Sc_1_3,
     Float_t Sc_0_4, Float_t Sc_1_4,
+    Float_t Sc_0_8, Float_t Sc_1_8,
     Int_t *electronPMT)
 {
 
@@ -126,10 +129,34 @@ void GetTrueEnergy(
         ++ swap_count_false;
     }
 
+    int nOrientation[] = {0, 34, 73, 85};
+    int nBlock[] = {17, 13, 3, 3};
 
+    int sectorNumber_0 = (int)Sc_0_1;
+    int iobtFlag_0 = (int)Sc_0_2;
+    int fcll_0 = (int)Sc_0_3;
+    int blockNumber_0 = (int)Sc_0_4;
+    
+    int sectorNumber_1 = (int)Sc_1_1;
+    int iobtFlag_1 = (int)Sc_1_2;
+    int fcll_1 = (int)Sc_1_3;
+    int blockNumber_1 = (int)Sc_1_4;
+
+    int nOrientation_0 = nOrientation[iobtFlag_0];
+    int nBlock_0 = nBlock[iobtFlag_0];
+    int column_0 = (iobtFlag_0 == 0) ? fcll_0 / 2 : fcll_0;
+
+    int nOrientation_1 = nOrientation[iobtFlag_1];
+    int nBlock_1 = nBlock[iobtFlag_1];
+    int column_1 = (iobtFlag_1 == 0) ? fcll_1 / 2 : fcll_1;
+    
+    Int_t my_Sc_0_4 = sectorNumber_0 * 97 + nOrientation_0 + column_0 * nBlock_0 + blockNumber_0 + 1;
+    Int_t my_Sc_1_4 = sectorNumber_1 * 97 + nOrientation_1 + column_1 * nBlock_1 + blockNumber_1 + 1;
+    
     std::cout << "Check block number" << std::endl;
     std::cout << "block numbers for chain: " << Sc_0_4 << ", " << Sc_1_4 << std::endl;
     std::cout << "block numbers for input: " << electronPMT[0] << "," << electronPMT[1] << std::endl;
+    std::cout << "block numbers for input: " << my_Sc_0_4 << "," << my_Sc_1_4 << std::endl;
     std::cin.get();
 
     
@@ -1024,7 +1051,15 @@ void filestripperORIG()
             */
 
             // write to file
-            GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu, Sc[0][8], Sc[1][8], electronEnergy, Sc[0][4], Sc[1][4], electronPMT);
+            GetTrueEnergy(trueElectronEnergy,
+                Pxntu, Pyntu, Pzntu,
+                electronEnergy,
+                Sc[0][1], Sc[1][1],
+                Sc[0][2], Sc[1][2],
+                Sc[0][3], Sc[1][3],
+                Sc[0][4], Sc[1][4],
+                Sc[0][8], Sc[1][8],
+                electronPMT);
             ++ count;
             toutput->Fill();
         }
