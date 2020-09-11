@@ -481,9 +481,9 @@ void filestripperNEW()
         ///////////////////////////////////////////////////////////////////////////
 
         //Long64_t ix_faster = 0;
-        for(Long64_t ix{0}; ix < max_B; ++ ix)
+        for(Long64_t ix_B{0}; ix_B < max_B; ++ ix_B)
         {
-            tinput_B->GetEntry(ix);
+            tinput_B->GetEntry(ix_B);
 
             //std::cout << "ix=" << ix << " / " << max << std::endl;
             //std::cout << "looking for Run=" << Run << std::endl;
