@@ -94,7 +94,7 @@ std::size_t swap_count_true = 0;
 std::size_t swap_count_false = 0;
 
 
-void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu)
+void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu, Float_t Sc_0_8, Float_t Sc_1_8, Double_t* electronEnergy)
 {
 
     const Double_t electron_rest_mass = 1.0e-3 * 0.51099895; // GeV
@@ -123,7 +123,7 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
 #define DEBUG 1
 #if DEBUG
     std::cout << "original files:  trueEnergy(" << 1.0e+03 * electron_energy_0 << ", " << 1.0e+03 * electron_energy_1 << ") [MeV] " << std::endl;
-    std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << ") [MeV] " << std::endl;
+    std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc_0_8 << ", " << 1.0e+03 * Sc_1_8 << ") [MeV] " << std::endl;
     std::cout << "processed files: recoEnergy(" << electronEnergy[0] << ", " << electronEnergy[1] << ") [MeV] " << std::endl;
     //std::cout << "Electron Energy: " << electronEnergy[0] << ", " << 1.0e3 * electron_energy_0 << std::endl;
     //std::cout << "Electron Energy: " << electronEnergy[1] << ", " << 1.0e3 * electron_energy_1 << std::endl;
@@ -974,7 +974,7 @@ void filestripperORIG()
             */
 
             // write to file
-            GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu);
+            GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu, Sc[8][0], Sc[8][1], electronEnergy);
             ++ count;
             toutput->Fill();
         }
