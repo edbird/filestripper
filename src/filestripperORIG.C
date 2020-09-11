@@ -133,6 +133,7 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
 
         std::swap(Sc_0_8, Sc_1_8); // does not do anything outside this function
         std::swap(trueElectronEnergy_0, trueElectronEnergy_1); // this does do something outside of this function
+        std::cout << "suspicious event fixed" << std::endl;
     }
 
 #define DEBUG 1
