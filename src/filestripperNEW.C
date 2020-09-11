@@ -483,9 +483,18 @@ void filestripperNEW()
         Long64_t ix_faster = 0;
         for(Long64_t ix_B{0}; ix_B < max_B; ++ ix_B)
         {
+            if(ix_B % 10000 == 0)
+            {
+                std::cout << "ix_B=" << ix_B << " / " << max_B << std::endl;
+            }
+
             tinput_B->GetEntry(ix_B);
 
-            //std::cout << "ix=" << ix << " / " << max << std::endl;
+            if(Run == 9060)
+            {
+                std::cout << "reached Run 9060" << std::endl;
+            }
+
             //std::cout << "looking for Run=" << Run << std::endl;
 
             //std::cout << "Searching, ix=" << ix << std::endl;
@@ -495,6 +504,22 @@ void filestripperNEW()
             Long64_t max_A{tinput_A->GetEntries()};
             Long64_t ix_A_start, ix_A_end, ix_A_match;
             //std::cout << "ix_faster=" << ix_faster << std::endl;
+
+            if(Run == 9060)
+            {
+                std::cout << "ix_faster=" << ix_faster << std::endl;
+                std::cout << "max_A=" << max_A << std::endl;
+                std::cout << "search for Run 9060 in tinput_A..." << std::endl;
+                for(Long64_t ix_A_new = 0; ix_A_new < tinput_A->GetEntries(); ++ ix_A_new)
+                {
+                    tinput_A->GetEntry(ix_A_new);
+                    if(-run == 9060)
+                    {
+                        std::cout << "found run=" << run << " ix_A_new=" << ix_A_new << std::endl;
+                    }
+                }
+                std::cin.get();
+            }
             for(Long64_t ix_A{ix_faster}; ix_A < max_A; ++ ix_A)
             //for(Long64_t ix_A{0}; ix_A < max_A; ++ ix_A)
             {
