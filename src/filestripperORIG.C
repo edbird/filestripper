@@ -898,6 +898,7 @@ void filestripperORIG()
                 break;
             }
         }
+        std::cout << "setting ix_chain_start=" << ix_chain_start << std::endl;
         for(Long64_t ix_chain{ix_chain_start + 1}; ix_chain < max_chain; ++ ix_chain)
         {
             tchain->GetEntry(ix_chain);
@@ -917,6 +918,7 @@ void filestripperORIG()
                 break;
             }
         }
+        std::cout << "setting ix_chain_end=" << ix_chain_end << std::endl;
 
         //std::cout << "ix=" << ix << ", ix_chain_start=" << ix_chain_start << " ix_chain_end=" << ix_chain_end << std::endl;
         //std::cin.get();
