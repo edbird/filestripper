@@ -575,6 +575,7 @@ void filestripperNEW()
             Long64_t ix_A_start, ix_A_end, ix_A_match;
             //std::cout << "ix_faster=" << ix_faster << std::endl;
 
+            /*
             if(Run == 9060)
             {
                 std::cout << "ix_faster=" << ix_faster << std::endl;
@@ -590,6 +591,7 @@ void filestripperNEW()
                 }
                 std::cin.get();
             }
+            */
             for(Long64_t ix_A{ix_faster}; ix_A < max_A; ++ ix_A)
             //for(Long64_t ix_A{0}; ix_A < max_A; ++ ix_A)
             {
