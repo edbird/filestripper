@@ -156,8 +156,28 @@ void GetTrueEnergy(
     std::cout << "Check block number" << std::endl;
     std::cout << "block numbers for chain: " << Sc_0_4 << ", " << Sc_1_4 << std::endl;
     std::cout << "block numbers for input: " << electronPMT[0] << "," << electronPMT[1] << std::endl;
-    std::cout << "block numbers for input: " << my_Sc_0_4 << "," << my_Sc_1_4 << std::endl;
-    std::cin.get();
+    std::cout << "my block numbers for input: " << my_Sc_0_4 << "," << my_Sc_1_4 << std::endl;
+
+    bool swap = false;
+    if(Sc_0_4 == Sc_1_4)
+    {
+        std::cout << "BLOCK NUMBERS ARE THE SAME" << std::endl;
+        std::cin.get();
+    }
+    else if(Sc_0_4 == my_Sc_1_4)
+    {
+        if(Sc_1_4 == my_Sc_0_4)
+        {
+            swap = true;
+            std::cout << "SWAP DETECTED USING BLOCK NUMBERS" << std::endl;
+            std::cin.get();
+
+            std::swap(Sc_0_4, Sc_1_4); // this is irrelevant futher in function
+            std::swap(Sc_0_8, Sc_1_8); // this needs to be swapped
+            std::swap(trueElectronEnergy_0, trueElectronEnergy_1); // this also needs to be swapped
+        }
+    }
+
 
     
     if((std::abs(1.0e+03 * Sc_0_8 - electronEnergy[0]) > 1.0e-8) &&
@@ -172,7 +192,7 @@ void GetTrueEnergy(
 
         std::swap(Sc_0_8, Sc_1_8); // does not do anything outside this function
         std::swap(trueElectronEnergy_0, trueElectronEnergy_1); // this does do something outside of this function
-        std::cout << "suspicious event fixed" << std::endl;
+        std::cout << "suspicious event fixed - this should now never occur" << std::endl;
     }
 
 #define DEBUG 1
@@ -212,7 +232,8 @@ void GetTrueEnergy(
     // not sure if multiplication is required
     trueElectronEnergy[0] = 1.0e+03 * trueElectronEnergy_0;
     trueElectronEnergy[1] = 1.0e+03 * trueElectronEnergy_1;
-    
+   
+    std::cin.get();
 }
 
 void SearchFunction(
