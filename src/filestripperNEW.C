@@ -151,7 +151,7 @@ void filestripperNEW()
     // /home/blotsd/NEMO3/Nd150_analysis/DataLists/nd150_61_rot_nd150.lst
 
 
-    const int NUM_NAMES = 20;
+    const int NUM_NAMES = 1;// 20;
     
     // input set A
     // the files which Summer used to create Nd150_2eNg_output.root
