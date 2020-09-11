@@ -472,6 +472,76 @@ void filestripperNEW()
         tinput_B->SetBranchAddress("clusterHitZ", clusterHitZ);
 
 
+        ///////////////////////////////////////////////////////////////////////
+        // check order of input files
+        ///////////////////////////////////////////////////////////////////////
+
+        // check tchain run numbers in order
+        {
+            Long64_t max_input_A{tinput_A->GetEntries()};
+            tinput_A->GetEntry(0);
+            Long64_t run_last = run;
+            for(Long64_t ix_input_A{1}; ix_input_A < max_input_A; ++ ix_input_A)
+            {
+                tinput_A->GetEntry(ix_input_A);
+
+                if(run == run_last)
+                {
+                    // do nothing, ok
+                }
+                else if(run == run_last - 1)
+                {
+                    // do nothing, ok
+                }
+                else if(run < run_last - 1)
+                {
+                    std::cout << "run: " << run_last << " -> " << run << std::endl;
+                }
+                else
+                {
+                    std::cout << "ERROR: run=" << run << " run_last=" << run_last << std::endl;
+                    std::cin.get();
+                }
+
+                run_last = run;
+            }
+        }
+
+        // check tinput run numbers in order TODO
+        {
+            Long64_t max{tinput_B->GetEntries()};
+            tinput_B->GetEntry(0);
+            Long64_t Run_last = Run;
+            for(Long64_t ix{1}; ix < max; ++ ix)
+            {
+                tinput_B->GetEntry(ix);
+
+                if(Run == Run_last)
+                {
+                    // do nothing, ok
+                }
+                else if(Run == Run_last + 1)
+                {
+                    // do nothing, ok
+                    //std::cout << "Run=" << Run << std::endl;
+                }
+                else if(Run > Run_last + 1)
+                {
+                    //std::cout << "Run: " << Run_last << " -> " << Run << std::endl;
+                }
+                else
+                {
+                    std::cout << "ERROR: ix=" << ix << " Run=" << Run << " Run_last=" << Run_last << std::endl;
+                    //std::cin.get();
+                }
+
+                Run_last = Run;
+            }
+        }
+
+        std::cout << "checks done" << std::endl;
+
+
         // count number of events saved to output file
         Long64_t count{0};
         Long64_t max_B{tinput_B->GetEntries()};
@@ -536,6 +606,10 @@ void filestripperNEW()
                     break;
                 }
             }
+            if(Run == 9060)
+            {
+                std::cout << "setting the start search point to " << ix_A_start << std::endl;
+            }
             for(Long64_t ix_A{ix_A_start + 1}; ix_A < max_A; ++ ix_A)
             {
                 tinput_A->GetEntry(ix_A);
@@ -555,6 +629,10 @@ void filestripperNEW()
                     //std::cout << "ix_A_end=" << ix_A_end << " ix_A_faster=" << ix_A_faster << std::endl;
                     break;
                 }
+            }
+            if(Run == 9060)
+            {
+                std::cout << "setting the end search point to " << ix_A_end << std::endl;
             }
 
             //std::cout << "ix=" << ix << ", ix_A_start=" << ix_A_start << " ix_A_end=" << ix_A_end << std::endl;
@@ -621,7 +699,7 @@ void filestripperNEW()
             }
             else if(multi_match_count == 0)
             {
-                std::cout << "Error: multi_match_count=0 ! : xi_B=" << ix_B << " Run=" << Run <<  std::endl;
+                std::cout << "Error: multi_match_count=0 ! : xi_B=" << ix_B << " Run=" << Run << " ix_A_star=" << ix_A_start << " ix_A_end=" << ix_A_end << std::endl;
                 std::cin.get();
             }
             else
@@ -662,75 +740,6 @@ void filestripperNEW()
 
 
 
-    // check tchain run numbers in order
-    // 2020-09-07: check passed on foils_nd150_61_rot_nd150_1xx_xx.root
-    #if 0
-    {
-        Long64_t max_chain{tchain->GetEntries()};
-        tchain->GetEntry(0);
-        Long64_t run_last = run;
-        for(Long64_t ix_chain{1}; ix_chain < max_chain; ++ ix_chain)
-        {
-            tchain->GetEntry(ix_chain);
-
-            if(run == run_last)
-            {
-                // do nothing, ok
-            }
-            else if(run == run_last - 1)
-            {
-                // do nothing, ok
-            }
-            else if(run < run_last - 1)
-            {
-                std::cout << "run: " << run_last << " -> " << run << std::endl;
-            }
-            else
-            {
-                std::cout << "ERROR: run=" << run << " run_last=" << run_last << std::endl;
-                std::cin.get();
-            }
-
-            run_last = run;
-        }
-    }
-    #endif
-
-    // check tinput run numbers in order TODO
-    #if 0
-    {
-        Long64_t max{tinput->GetEntries()};
-        tinput->GetEntry(0);
-        Long64_t Run_last = Run;
-        for(Long64_t ix{1}; ix < max; ++ ix)
-        {
-            tinput->GetEntry(ix);
-
-            if(Run == Run_last)
-            {
-                // do nothing, ok
-            }
-            else if(Run == Run_last + 1)
-            {
-                // do nothing, ok
-                //std::cout << "Run=" << Run << std::endl;
-            }
-            else if(Run > Run_last + 1)
-            {
-                //std::cout << "Run: " << Run_last << " -> " << Run << std::endl;
-            }
-            else
-            {
-                std::cout << "ERROR: ix=" << ix << " Run=" << Run << " Run_last=" << Run_last << std::endl;
-                //std::cin.get();
-            }
-
-            Run_last = Run;
-        }
-    }
-
-    std::cout << "checks done" << std::endl;
-    #endif
 
 
 }
