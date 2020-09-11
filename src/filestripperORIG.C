@@ -94,7 +94,13 @@ std::size_t swap_count_true = 0;
 std::size_t swap_count_false = 0;
 
 
-void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu, Float_t Sc_0_8, Float_t Sc_1_8, Double_t* electronEnergy)
+void GetTrueEnergy(
+    Double_t* trueElectronEnergy,
+    Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu,
+    Float_t Sc_0_8, Float_t Sc_1_8,
+    Double_t* electronEnergy,
+    Float_t Sc_0_4, Float_t Sc_1_4,
+    Int_t *electronPMT)
 {
 
     const Double_t electron_rest_mass = 1.0e-3 * 0.51099895; // GeV
@@ -119,6 +125,12 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
         //std::cout << "swap FALSE" << std::endl;
         ++ swap_count_false;
     }
+
+
+    std::cout << "Check block number" << std::endl;
+    std::cout << "block numbers for chain: " << Sc_0_4 << ", " << Sc_1_4 << std::endl;
+    std::cout << "block numbers for input: " << electronPMT[0] << "," << electronPMT[1] << std::endl;
+    std::cin.get();
 
     
     if((std::abs(1.0e+03 * Sc_0_8 - electronEnergy[0]) > 1.0e-8) &&
@@ -1012,7 +1024,7 @@ void filestripperORIG()
             */
 
             // write to file
-            GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu, Sc[0][8], Sc[1][8], electronEnergy);
+            GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu, Sc[0][8], Sc[1][8], electronEnergy, Sc[0][4], Sc[1][4], electronPMT);
             ++ count;
             toutput->Fill();
         }
