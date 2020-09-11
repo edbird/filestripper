@@ -974,7 +974,7 @@ void filestripperORIG()
             */
 
             // write to file
-            GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu, Sc[8][0], Sc[8][1], electronEnergy);
+            GetTrueEnergy(trueElectronEnergy, Pxntu, Pyntu, Pzntu, Sc[0][8], Sc[1][8], electronEnergy);
             ++ count;
             toutput->Fill();
         }
