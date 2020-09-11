@@ -22,10 +22,10 @@ void filesplitter()
 
     const int NUM_NAMES = 20;
     std::string names[NUM_NAMES];
-    names[0] = "Nd150_2eNg_output_split_nd150_101_01.root";
-    names[1] = "Nd150_2eNg_output_split_nd150_101_02.root";
-    names[2] = "Nd150_2eNg_output_split_nd150_102_01.root";
-    names[3] = "Nd150_2eNg_output_split_nd150_102_02.root";
+    names[0] = "Nd150_2eNg_output_split_nd150_101_01.root"; // Split output of
+    names[1] = "Nd150_2eNg_output_split_nd150_101_02.root"; // Summers file
+    names[2] = "Nd150_2eNg_output_split_nd150_102_01.root"; // into these
+    names[3] = "Nd150_2eNg_output_split_nd150_102_02.root"; // file names
     names[4] = "Nd150_2eNg_output_split_nd150_103_01.root";
     names[5] = "Nd150_2eNg_output_split_nd150_103_02.root";
     names[6] = "Nd150_2eNg_output_split_nd150_104_01.root";
@@ -46,7 +46,7 @@ void filesplitter()
 
     // working at home
     TString finput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
-    TFile *finput = new TFile(finput_dir + "Nd150_2eNg_output.root");
+    TFile *finput = new TFile(finput_dir + "Nd150_2eNg_output.root"); // Summers working file for 2e directory
     TTree *tinput = (TTree*)finput->Get("Nd150_2eNg/Nd150_2eNg");
 
 
@@ -229,6 +229,9 @@ void filesplitter()
     toutput->Branch("clusterHitLDCorrErr", &clusterHitLDCorrErr, "clusterHitLDCorrErr[nTotalClusterHits]/D");
     toutput->Branch("clusterHitSec", &clusterHitSec, "clusterHitSec[nTotalClusterHits]/D");
     toutput->Branch("clusterHitZ", &clusterHitZ, "clusterHitZ[nTotalClusterHits]/D");
+
+    std::cout << "Next file: " << names[output_file_index] << std::endl;
+    std::cout << "output_file_index=" << output_file_index << std::endl;
 
     ++ output_file_index;
 
