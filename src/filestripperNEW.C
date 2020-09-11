@@ -287,7 +287,7 @@ void filestripperNEW()
     // initialize output file
     ///////////////////////////////////////////////////////////////////////////
 
-    TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/output_split";
+    TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/output_split/";
     TString foutput_fname = "Nd150_2eNg_output_truth_NEWNEW_.root";
     TFile *foutput = new TFile(foutput_dir + foutput_fname, "recreate");
     TDirectory *doutput = foutput->mkdir("Nd150_2eNg");
@@ -382,7 +382,7 @@ void filestripperNEW()
         }
         TTree *tinput_A = (TTree*)finput_A->Get("h10");
 
-        TString finput_dir_B = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/input_split";
+        TString finput_dir_B = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/input_split/";
         TString finput_name_B = names_input_B[file_index];
         TFile *finput_B = new TFile(finput_dir_B + finput_name_B);
         if(!finput_B->IsOpen())
