@@ -141,7 +141,7 @@ void SearchFunction(
     }
 }
 
-void filestripper()
+void filestripperNEW()
 {
 
     // QuickSort Test
