@@ -495,7 +495,7 @@ void filestripperNEW()
                 }
                 else if(run < run_last - 1)
                 {
-                    std::cout << "run: " << run_last << " -> " << run << std::endl;
+                    //std::cout << "run: " << run_last << " -> " << run << std::endl;
                 }
                 else
                 {
@@ -620,11 +620,11 @@ void filestripperNEW()
                 // (this bound is not included in the search)
                 if(-run == Run)
                 {
-                    //ix_A_end = ix_A;
+                    ix_A_end = ix_A + 1;
                 }
                 else
                 {
-                    ix_A_end = ix_A;
+                    //ix_A_end = ix_A;
                     //ix_A_faster = ix_A;
                     //std::cout << "ix_A_end=" << ix_A_end << " ix_A_faster=" << ix_A_faster << std::endl;
                     break;
