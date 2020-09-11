@@ -885,6 +885,7 @@ void filestripper()
             if(-run == Run)
             {
                 ix_chain_start = ix_chain;
+                ix_chain_faster = ix_chain; // 2020-09-11 moved this to here from below
                 //std::cout << "ix_chain_start=" << ix_chain_start << std::endl;
                 break;
             }
@@ -898,11 +899,12 @@ void filestripper()
             if(-run == Run)
             {
                 //ix_chain_end = ix_chain;
+                ix_chain_end = ix_chain + 1; // does not include the final + 1 in search
             }
             else
             {
-                ix_chain_end = ix_chain;
-                ix_chain_faster = ix_chain;
+                //ix_chain_end = ix_chain; // moved above
+                //ix_chain_faster = ix_chain;
                 //std::cout << "ix_chain_end=" << ix_chain_end << " ix_chain_faster=" << ix_chain_faster << std::endl;
                 break;
             }
