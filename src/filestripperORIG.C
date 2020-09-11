@@ -101,15 +101,15 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
     const Double_t m = electron_rest_mass;
     const Double_t m2 = electron_rest_mass * electron_rest_mass;
     Double_t p0_2 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0]; // GeV
-    Double_t electron_energy_0 = std::sqrt(p0_2 + m2) - m; // GeV
+    Double_t trueElectronEnergy_0 = std::sqrt(p0_2 + m2) - m; // GeV
     Double_t p1_2 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
-    Double_t electron_energy_1 = std::sqrt(p1_2 + m2) - m;
-    //Double_t electron_energy_0 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0];
-    //electron_energy_0 = 1.0e3 * std::sqrt(electron_energy_0);
-    //Double_t electron_energy_1 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
-    //electron_energy_1 = 1.0e3 * std::sqrt(electron_energy_1);
-//    if(electron_energy_0 < electron_energy_1) std::swap(electron_energy_0, electron_energy_1);
-    if(electron_energy_0 < electron_energy_1)
+    Double_t trueElectronEnergy_1 = std::sqrt(p1_2 + m2) - m;
+    //Double_t trueElectronEnergy_0 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0];
+    //trueElectronEnergy_0 = 1.0e3 * std::sqrt(trueElectronEnergy_0);
+    //Double_t trueElectronEnergy_1 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
+    //trueElectronEnergy_1 = 1.0e3 * std::sqrt(trueElectronEnergy_1);
+//    if(trueElectronEnergy_0 < trueElectronEnergy_1) std::swap(trueElectronEnergy_0, trueElectronEnergy_1);
+    if(trueElectronEnergy_0 < trueElectronEnergy_1)
     {
         //std::cout << "swap TRUE" << std::endl;
         ++ swap_count_true;
@@ -122,12 +122,11 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
 
 #define DEBUG 1
 #if DEBUG
-    std::cout << "original files:  trueEnergy(" << 1.0e+03 * electron_energy_0 << ", " << 1.0e+03 * electron_energy_1 << ") [MeV] " << std::endl;
+    std::cout << "original files:  trueEnergy(" << 1.0e+03 * trueElectronEnergy_0 << ", " << 1.0e+03 * trueElectronEnergy_1 << ") [MeV] " << std::endl;
     std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc_0_8 << ", " << 1.0e+03 * Sc_1_8 << ") [MeV] " << std::endl;
     std::cout << "processed files: recoEnergy(" << electronEnergy[0] << ", " << electronEnergy[1] << ") [MeV] " << std::endl;
-    std::cout << std::endl;
-    //std::cout << "Electron Energy: " << electronEnergy[0] << ", " << 1.0e3 * electron_energy_0 << std::endl;
-    //std::cout << "Electron Energy: " << electronEnergy[1] << ", " << 1.0e3 * electron_energy_1 << std::endl;
+    //std::cout << "Electron Energy: " << electronEnergy[0] << ", " << 1.0e3 * trueElectronEnergy_0 << std::endl;
+    //std::cout << "Electron Energy: " << electronEnergy[1] << ", " << 1.0e3 * trueElectronEnergy_1 << std::endl;
     //std::cout << "Ecc: " << Ecc[0] << ", " << Ecc[1] << std::endl;
     //std::cout << "Sc: " << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << std::endl;
 #endif
@@ -139,10 +138,11 @@ void GetTrueEnergy(Double_t* trueElectronEnergy, Float_t* Pxntu, Float_t* Pyntu,
         std::cout << "suspicious event: energy 1: " << 1.0e+03 * Sc_1_8 << ", " << electronEnergy[1] << std::endl;
     }
 
+    std::cout << std::endl;
     // TODO: can simply set branch addresses to input variables?
     // not sure if multiplication is required
-    trueElectronEnergy[0] = 1.0e+03 * electron_energy_0;
-    trueElectronEnergy[1] = 1.0e+03 * electron_energy_1;
+    trueElectronEnergy[0] = 1.0e+03 * trueElectronEnergy_0;
+    trueElectronEnergy[1] = 1.0e+03 * trueElectronEnergy_1;
     
 }
 
