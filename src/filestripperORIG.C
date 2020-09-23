@@ -187,6 +187,173 @@ void GetTrueEnergy(
 // release_1.0.0/NemoObjects/src/N3CalorimeterHit.cpp
 // release_1.0.0/NemoMods/src/NemorInputModule.cpp
 
+void GetTrueEnergy(
+    Double_t* trueElectronEnergy,
+    Float_t* Pxntu, Float_t* Pyntu, Float_t* Pzntu)
+{
+
+    const Double_t electron_rest_mass = 1.0e-3 * 0.51099895; // GeV
+    const Double_t m = electron_rest_mass;
+    const Double_t m2 = electron_rest_mass * electron_rest_mass;
+    Double_t p0_2 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0]; // GeV
+    Double_t trueElectronEnergy_0 = std::sqrt(p0_2 + m2) - m; // GeV
+    Double_t p1_2 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
+    Double_t trueElectronEnergy_1 = std::sqrt(p1_2 + m2) - m;
+    //Double_t trueElectronEnergy_0 = Pxntu[0] * Pxntu[0] + Pyntu[0] * Pyntu[0] + Pzntu[0] * Pzntu[0];
+    //trueElectronEnergy_0 = 1.0e3 * std::sqrt(trueElectronEnergy_0);
+    //Double_t trueElectronEnergy_1 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
+    //trueElectronEnergy_1 = 1.0e3 * std::sqrt(trueElectronEnergy_1);
+//    if(trueElectronEnergy_0 < trueElectronEnergy_1) std::swap(trueElectronEnergy_0, trueElectronEnergy_1);
+
+    if(trueElectronEnergy_0 < trueElectronEnergy_1)
+    {
+        //std::cout << "swap TRUE" << std::endl;
+        ++ swap_count_true;
+    }
+    else
+    {
+        //std::cout << "swap FALSE" << std::endl;
+        ++ swap_count_false;
+    }
+
+
+#if 0
+    // constants
+    const int nOrientation[] = {0, 34, 73, 85};
+    const int nBlock[] = {17, 13, 3, 3};
+
+    // input variables to construct my block number
+    int sectorNumber_0 = (int)Sc_0_1;
+    int iobtFlag_0 = (int)Sc_0_2;
+    int fcll_0 = (int)Sc_0_3;
+
+    // check against this input
+    int blockNumber_0 = (int)Sc_0_4;
+    
+    // input variables to construct my block number
+    int sectorNumber_1 = (int)Sc_1_1;
+    int iobtFlag_1 = (int)Sc_1_2;
+    int fcll_1 = (int)Sc_1_3;
+
+    // check against this input
+    int blockNumber_1 = (int)Sc_1_4;
+
+    int nOrientation_0 = nOrientation[iobtFlag_0];
+    int nBlock_0 = nBlock[iobtFlag_0];
+    int column_0 = (iobtFlag_0 == 0) ? fcll_0 / 2 : fcll_0;
+
+    int nOrientation_1 = nOrientation[iobtFlag_1];
+    int nBlock_1 = nBlock[iobtFlag_1];
+    int column_1 = (iobtFlag_1 == 0) ? fcll_1 / 2 : fcll_1;
+    
+    Int_t my_Sc_0_4 = sectorNumber_0 * 97 + nOrientation_0 + column_0 * nBlock_0 + blockNumber_0 + 1;
+    Int_t my_Sc_1_4 = sectorNumber_1 * 97 + nOrientation_1 + column_1 * nBlock_1 + blockNumber_1 + 1;
+    
+    // electronPMT[x] contains the PMT block number as read from processed 
+    // input files
+    //
+    // Sc_0_4 / Sc_1_4 contains the PMT block number as read from the tchain
+    //
+    // my_Sc_0_4 / my_Sc_1_4 contains the PMT block number as reconstructed
+    // from the processing module which generates the <input files> from
+    // the tchain
+    //
+    // so if electronPMT[x] does not match my_Sc_x_4 then this suggests the
+    // processing module swapped the values related to the electron
+    // which would include electronPMT and electronEnergy
+    // but we have no clue what it did with the trueEnergy
+    // this variable may never have even been constructed
+    // regardless, we have no clue what it did with the true momentum
+    // Pxntu etc
+
+    std::cout << "Check block number" << std::endl;
+    std::cout << "block numbers for chain: " << Sc_0_4 << ", " << Sc_1_4 << std::endl;
+    std::cout << "block numbers for input: " << electronPMT[0] << "," << electronPMT[1] << std::endl;
+    std::cout << "my block numbers for input: " << my_Sc_0_4 << "," << my_Sc_1_4 << std::endl;
+
+    
+    bool swap = false;
+    if(Sc_0_4 == Sc_1_4)
+    {
+        std::cout << "BLOCK NUMBERS ARE THE SAME" << std::endl;
+        std::cin.get();
+    }
+    else if(Sc_0_4 == my_Sc_1_4)
+    {
+        if(Sc_1_4 == my_Sc_0_4)
+        {
+            swap = true;
+            std::cout << "SWAP DETECTED USING BLOCK NUMBERS" << std::endl;
+            std::cin.get();
+
+            std::swap(Sc_0_4, Sc_1_4); // this is irrelevant futher in function
+            std::swap(Sc_0_8, Sc_1_8); // this needs to be swapped
+            std::swap(trueElectronEnergy_0, trueElectronEnergy_1); // this also needs to be swapped
+        }
+    }
+
+    
+    if((std::abs(1.0e+03 * Sc_0_8 - electronEnergy[0]) > 1.0e-8) &&
+       (std::abs(1.0e+03 * Sc_1_8 - electronEnergy[1]) > 1.0e-8) &&
+       (std::abs(1.0e+03 * Sc_0_8 - electronEnergy[1]) < 1.0e-8) &&
+       (std::abs(1.0e+03 * Sc_1_8 - electronEnergy[0]) < 1.0e-8))
+    {
+        // the data in the input chain is swapped relative to Summers values
+        // swap all data associated with input chain
+        // this includes the reconstructed scintillator hit energy
+        // as well as the true momentum
+
+        std::swap(Sc_0_8, Sc_1_8); // does not do anything outside this function
+        std::swap(trueElectronEnergy_0, trueElectronEnergy_1); // this does do something outside of this function
+        std::cout << "suspicious event fixed - this should now never occur" << std::endl;
+    }
+#endif
+
+#define DEBUG 0
+#if DEBUG
+    std::cout << "original files:  trueEnergy(" << 1.0e+03 * trueElectronEnergy_0 << ", " << 1.0e+03 * trueElectronEnergy_1 << ") [MeV] " << std::endl;
+    std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc_0_8 << ", " << 1.0e+03 * Sc_1_8 << ") [MeV] " << std::endl;
+    std::cout << "processed files: recoEnergy(" << electronEnergy[0] << ", " << electronEnergy[1] << ") [MeV] " << std::endl;
+    //std::cout << "Electron Energy: " << electronEnergy[0] << ", " << 1.0e3 * trueElectronEnergy_0 << std::endl;
+    //std::cout << "Electron Energy: " << electronEnergy[1] << ", " << 1.0e3 * trueElectronEnergy_1 << std::endl;
+    //std::cout << "Ecc: " << Ecc[0] << ", " << Ecc[1] << std::endl;
+    //std::cout << "Sc: " << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << std::endl;
+#endif
+
+#if 0
+    if((std::abs(1.0e+03 * Sc_0_8 - electronEnergy[0]) > 1.0e-3) ||
+       (std::abs(1.0e+03 * Sc_1_8 - electronEnergy[1]) > 1.0e-3))
+    {
+        std::cout << "suspicious event: energy 0: " << 1.0e+03 * Sc_0_8 << ", " << electronEnergy[0] << std::endl;
+        std::cout << "suspicious event: energy 1: " << 1.0e+03 * Sc_1_8 << ", " << electronEnergy[1] << std::endl;
+    }
+
+    if(
+        (
+            (trueElectronEnergy_0 < trueElectronEnergy_1) &&
+            (electronEnergy[1] < electronEnergy[0])
+        ) ||
+        (
+            (trueElectronEnergy_1 < trueElectronEnergy_0) &&
+            (electronEnergy[0] < electronEnergy[1])
+        )
+    )
+    {
+        std::cout << "swap detected" << std::endl;
+    }
+#endif
+
+#if 0
+    std::cout << std::endl;
+    // TODO: can simply set branch addresses to input variables?
+    // not sure if multiplication is required
+    trueElectronEnergy[0] = 1.0e+03 * trueElectronEnergy_0;
+    trueElectronEnergy[1] = 1.0e+03 * trueElectronEnergy_1;
+   
+    std::cin.get();
+#endif
+}
+
 void SearchFunction(
     int &return_flag,
     Int_t Run,
@@ -1025,6 +1192,7 @@ void filestripperORIG()
             */
 
             // write to file
+            #if 0
             GetTrueEnergy(trueElectronEnergy,
                 Pxntu, Pyntu, Pzntu,
                 electronEnergy,
@@ -1034,6 +1202,9 @@ void filestripperORIG()
                 Sc[0][4], Sc[1][4],
                 Sc[0][8], Sc[1][8],
                 electronPMT);
+            #endif
+            GetTrueEnergy(trueElectronEnergy,
+                Pxntu, Pyntu, Pzntu);
             ++ count;
             toutput->Fill();
         }
