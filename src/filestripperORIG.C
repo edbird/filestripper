@@ -8,87 +8,6 @@
 #include "TTree.h"
 #include "TChain.h"
 
-int Partition(Double_t A[], Long64_t start, Long64_t end);
-void QuickSort(Double_t A[], Long64_t start, Long64_t end);
-
-int Partition(Double_t A[], Long64_t start, Long64_t end)
-{
-    Long64_t pIndex = start;
-    //Double_t pivot = A[end];
-    Double_t pivot = A[start];
-    
-    /*for(Long64_t i = start; i < end - 1; ++ i)
-    {
-        if(A[i] < pivot)
-        {
-            //Double_t temp = A[i];
-            //A[i] = A[pIndex];
-            //A[pIndex] = temp;
-            std::swap(A[i], A[pIndex]);
-            ++ pIndex;
-        }
-    }
-    */
-    //Double_t temp = A[end];
-    //A[end] = A[pIndex];
-    //A[pIndex] = temp;
-    
-    Long64_t low = start + 1;
-    Long64_t high = end;
-    while(true)
-    {
-        while((low <= high) && (A[high] >= pivot))
-        {
-            high -= 1;
-        }
-
-        while((low <= high) && (A[low] <= pivot))
-        {
-            low += 1;
-        }
-
-        if(low <= high)
-        {
-            std::swap(A[low], A[high]);
-        }
-        else
-        {
-            break;
-        }
-    }
-    
-    //std::swap(A[end], A[pIndex]);
-    std::swap(A[start], A[high]);
-    //return pIndex;
-    return high;
-}
-
-void QuickSort(Double_t A[], Long64_t start, Long64_t end)
-{
-    if(start < end)
-    {
-        Long64_t pIndex = Partition(A, start, end);
-        QuickSort(A, start, pIndex - 1);
-        QuickSort(A, pIndex + 1, end);
-    }
-}
-
-void qst()
-{
-    Int_t MAX = 25;
-    Double_t *A = new Double_t[MAX];
-    for(Int_t i{0}; i < MAX; ++ i)
-    {
-        A[i] = 1000.0 - i;
-    }
-    QuickSort(A, 0, MAX);
-    for(Int_t i{0}; i < MAX; ++ i)
-    {
-        std::cout << "i=" << i << " A[i]=" << A[i] << std::endl;
-    }
-    std::cin.get();
-}
-
 
 std::size_t swap_count_true = 0;
 std::size_t swap_count_false = 0;
@@ -118,6 +37,7 @@ void GetTrueEnergy(
     //Double_t trueElectronEnergy_1 = Pxntu[1] * Pxntu[1] + Pyntu[1] * Pyntu[1] + Pzntu[1] * Pzntu[1];
     //trueElectronEnergy_1 = 1.0e3 * std::sqrt(trueElectronEnergy_1);
 //    if(trueElectronEnergy_0 < trueElectronEnergy_1) std::swap(trueElectronEnergy_0, trueElectronEnergy_1);
+
     if(trueElectronEnergy_0 < trueElectronEnergy_1)
     {
         //std::cout << "swap TRUE" << std::endl;
@@ -129,17 +49,26 @@ void GetTrueEnergy(
         ++ swap_count_false;
     }
 
-    int nOrientation[] = {0, 34, 73, 85};
-    int nBlock[] = {17, 13, 3, 3};
 
+#if 0
+    // constants
+    const int nOrientation[] = {0, 34, 73, 85};
+    const int nBlock[] = {17, 13, 3, 3};
+
+    // input variables to construct my block number
     int sectorNumber_0 = (int)Sc_0_1;
     int iobtFlag_0 = (int)Sc_0_2;
     int fcll_0 = (int)Sc_0_3;
+
+    // check against this input
     int blockNumber_0 = (int)Sc_0_4;
     
+    // input variables to construct my block number
     int sectorNumber_1 = (int)Sc_1_1;
     int iobtFlag_1 = (int)Sc_1_2;
     int fcll_1 = (int)Sc_1_3;
+
+    // check against this input
     int blockNumber_1 = (int)Sc_1_4;
 
     int nOrientation_0 = nOrientation[iobtFlag_0];
@@ -153,11 +82,29 @@ void GetTrueEnergy(
     Int_t my_Sc_0_4 = sectorNumber_0 * 97 + nOrientation_0 + column_0 * nBlock_0 + blockNumber_0 + 1;
     Int_t my_Sc_1_4 = sectorNumber_1 * 97 + nOrientation_1 + column_1 * nBlock_1 + blockNumber_1 + 1;
     
+    // electronPMT[x] contains the PMT block number as read from processed 
+    // input files
+    //
+    // Sc_0_4 / Sc_1_4 contains the PMT block number as read from the tchain
+    //
+    // my_Sc_0_4 / my_Sc_1_4 contains the PMT block number as reconstructed
+    // from the processing module which generates the <input files> from
+    // the tchain
+    //
+    // so if electronPMT[x] does not match my_Sc_x_4 then this suggests the
+    // processing module swapped the values related to the electron
+    // which would include electronPMT and electronEnergy
+    // but we have no clue what it did with the trueEnergy
+    // this variable may never have even been constructed
+    // regardless, we have no clue what it did with the true momentum
+    // Pxntu etc
+
     std::cout << "Check block number" << std::endl;
     std::cout << "block numbers for chain: " << Sc_0_4 << ", " << Sc_1_4 << std::endl;
     std::cout << "block numbers for input: " << electronPMT[0] << "," << electronPMT[1] << std::endl;
     std::cout << "my block numbers for input: " << my_Sc_0_4 << "," << my_Sc_1_4 << std::endl;
 
+    
     bool swap = false;
     if(Sc_0_4 == Sc_1_4)
     {
@@ -178,7 +125,6 @@ void GetTrueEnergy(
         }
     }
 
-
     
     if((std::abs(1.0e+03 * Sc_0_8 - electronEnergy[0]) > 1.0e-8) &&
        (std::abs(1.0e+03 * Sc_1_8 - electronEnergy[1]) > 1.0e-8) &&
@@ -194,8 +140,9 @@ void GetTrueEnergy(
         std::swap(trueElectronEnergy_0, trueElectronEnergy_1); // this does do something outside of this function
         std::cout << "suspicious event fixed - this should now never occur" << std::endl;
     }
+#endif
 
-#define DEBUG 1
+#define DEBUG 0
 #if DEBUG
     std::cout << "original files:  trueEnergy(" << 1.0e+03 * trueElectronEnergy_0 << ", " << 1.0e+03 * trueElectronEnergy_1 << ") [MeV] " << std::endl;
     std::cout << "original files:  recoEnergy(" << 1.0e+03 * Sc_0_8 << ", " << 1.0e+03 * Sc_1_8 << ") [MeV] " << std::endl;
@@ -206,6 +153,7 @@ void GetTrueEnergy(
     //std::cout << "Sc: " << 1.0e+03 * Sc[0][8] << ", " << 1.0e+03 * Sc[1][8] << std::endl;
 #endif
 
+#if 0
     if((std::abs(1.0e+03 * Sc_0_8 - electronEnergy[0]) > 1.0e-3) ||
        (std::abs(1.0e+03 * Sc_1_8 - electronEnergy[1]) > 1.0e-3))
     {
@@ -226,6 +174,7 @@ void GetTrueEnergy(
     {
         std::cout << "swap detected" << std::endl;
     }
+#endif
 
     std::cout << std::endl;
     // TODO: can simply set branch addresses to input variables?
@@ -235,6 +184,8 @@ void GetTrueEnergy(
    
     std::cin.get();
 }
+// release_1.0.0/NemoObjects/src/N3CalorimeterHit.cpp
+// release_1.0.0/NemoMods/src/NemorInputModule.cpp
 
 void SearchFunction(
     int &return_flag,
@@ -670,6 +621,7 @@ void filestripperORIG()
 
     // check tchain run numbers in order
     // 2020-09-07: check passed on foils_nd150_61_rot_nd150_1xx_xx.root
+    #if 0
     if(0)
     {
         Long64_t max_chain{tchain->GetEntries()};
@@ -735,7 +687,7 @@ void filestripperORIG()
     }
 
     std::cout << "checks done" << std::endl;
-
+    #endif
 
     Long64_t count{0};
     Long64_t max{tinput->GetEntries()};
@@ -834,8 +786,9 @@ void filestripperORIG()
 
     // TODO: change output file name
 
-    TString foutput_dir = "/mnt/ramdisk/";
-    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_all_deleteme.root";
+    //TString foutput_dir = "/mnt/ramdisk/";
+    TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
+    TString foutput_fname = "Nd150_2eNg_output_truth_NEW_all_2.root";
 
     std::cout << "last chance to check important parameters" << std::endl;
     //std::cout << "Run_min=" << Run_min << " Run_max=" << Run_max << std::endl;
