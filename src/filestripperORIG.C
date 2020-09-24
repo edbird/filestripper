@@ -347,9 +347,10 @@ void GetTrueEnergy(
     std::cout << std::endl;
     // TODO: can simply set branch addresses to input variables?
     // not sure if multiplication is required
+#endif
     trueElectronEnergy[0] = 1.0e+03 * trueElectronEnergy_0;
     trueElectronEnergy[1] = 1.0e+03 * trueElectronEnergy_1;
-   
+#if 0
     std::cin.get();
 #endif
 }
