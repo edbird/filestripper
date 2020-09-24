@@ -499,8 +499,8 @@ void filestripperORIG()
 
     // working at home
     
-    //TFile *finput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output.root");
-    TFile *finput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output.root");
+    TFile *finput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output.root");
+    //TFile *finput = new TFile("/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/Nd150_2eNg_output.root");
 
     TTree *tinput = (TTree*)finput->Get("Nd150_2eNg/Nd150_2eNg");
 
@@ -958,8 +958,8 @@ void filestripperORIG()
     // TODO: change output file name
 
     //TString foutput_dir = "/mnt/ramdisk/";
-    //TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
-    TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/";
+    TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2e/nd150/nd150_rot_2n2b_m4/";
+    //TString foutput_dir = "/mnt/ecb/unix/nemo3/users/ebirdsall/Nd150Analysis/newAnalysis/2eNg_29Sep2015/nd150/nd150_rot_2n2b_m4/";
     TString foutput_fname = "Nd150_2eNg_output_truth_NEW_all_3.root";
 
     std::cout << "last chance to check important parameters" << std::endl;
