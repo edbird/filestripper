@@ -350,7 +350,7 @@ void GetTrueEnergy(
 #endif
     trueElectronEnergy[0] = 1.0e+03 * trueElectronEnergy_0;
     trueElectronEnergy[1] = 1.0e+03 * trueElectronEnergy_1;
-#if 1
+#if 0
     std::cout << "trueElectronEnergy: " << trueElectronEnergy[0] << " " << trueElectronEnergy[1] << std::endl;
     std::cin.get();
 #endif
